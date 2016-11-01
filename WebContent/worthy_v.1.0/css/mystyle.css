@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.ux {
+	font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', Arial,
+		sans-serif;
+}
+
+.fixed-siderbar {
+	z-index: 0;
+	position: fixed;
+	top: 70px;
+}
