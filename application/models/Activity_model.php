@@ -59,6 +59,7 @@ class Activity_model extends CI_Model {
 		) );
 		return $query->row_array ();
 	}
+	
 	function add_activity($authorid, $content, $memberlimit) {
 		$this->db->insert ( 'activity', array (
 				'authorid' => $authorid,
@@ -69,6 +70,7 @@ class Activity_model extends CI_Model {
 			return TRUE;
 		return FALSE;
 	}
+	
 	function delete_activity($activityid) {
 		$this->db->delete ( 'activity', array (
 				'activity' => $activity,
@@ -77,6 +79,7 @@ class Activity_model extends CI_Model {
 			return TRUE;
 		return FALSE;
 	}
+	
 	function update_activity($activityid,$content){
 		$sql = "UPDATE activity SET content= ? WHERE activityid = ?";
 		$this->db->query ( $sql, array (

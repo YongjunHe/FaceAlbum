@@ -112,14 +112,11 @@
 									<div class="collapse navbar-collapse scrollspy smooth-scroll"
 										id="navbar-collapse-1">
 										<ul class="nav navbar-nav navbar-right ux">
-											<li><a href="<?php echo site_url('/Account/overview'); ?>">我</a></li>
-											<li><a href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
 											<li class="active"><a
-												href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
-											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
+												href="<?php echo site_url('/Friend/overview'); ?>">系统管理</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
-												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span class="caret"></span>
-											</a>
+												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span
+													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
 													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
 													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
@@ -161,65 +158,138 @@
 					<div class="space"></div>
 					<ul class="nav nav-sidebar">
 						<li id="btn1" style="background-color: #336699;"><a id="word1"
-							style="color: white;">Overview</a></li>
-						<li id="btn2"><a id="word2"
-							href="<?php echo site_url('/Activity/myActivity')?>">我的竞赛</a></li>
-						<li id="btn3"><a id="word3">单人竞赛</a></li>
-						<li id="btn4"><a id="word4">多人竞赛</a></li>
+							style="color: white;"
+							href="<?php echo site_url('/Friend/overview')?>">Overview</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-9 col-md-10 main"
 				style="background-color: #FBFBEA">
 				<h1 class="page-header">Overview</h1>
-
-				<div class="row placeholders">
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img src="images/fitness-2.jpg" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>我的竞赛</h4>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img src="images/health-1.jpg" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>单人竞赛</h4>
-					</div>
-					<div class="col-xs-6 col-sm-3 placeholder">
-						<img src="images/fitness-3.jpg" class="img-responsive"
-							alt="Generic placeholder thumbnail">
-						<h4>多人竞赛</h4>
-					</div>
-				</div>
-
-				<h2 class="sub-header">Section title</h2>
+				<p id='site_url' hidden="hidden"><?php echo site_url()?></p>	
+						
+				<h2 class="sub-header">用户列表</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>activityid</th>
-								<th>content</th>
-								<th>joiner</th>
-								<th>memberlimit</th>
-								<th>starttime</th>
-								<th>endtime</th>
+								<th>user id</th>
+								<th>user name</th>
+								<th>identity</th>
+								<th>email</th>
 							</tr>
 						</thead>
 						<tbody id="tbody01">
-							<?php foreach ($activities as $activities_item): ?>
+							<?php foreach ($users as $users_item): ?>
 							<tr>
-								<td><?php echo $activities_item['activityid']; ?></td>
-								<td><?php echo $activities_item['content']; ?></td>
-								<td><?php echo $activities_item['joiner']; ?></td>
-								<td><?php echo $activities_item['memberlimit']; ?></td>
-								<td><?php echo $activities_item['starttime']; ?></td>
-								<td><?php echo $activities_item['endtime']; ?></td>
-								<td><button type="button" class="btn btn-primary btn-xs"><?php echo $status; ?></button></td>
+								<td><?php echo $users_item['userid']; ?></td>
+								<td><?php echo $users_item['username']; ?></td>
+								<td><?php echo $users_item['identity']; ?></td>
+								<td><?php echo $users_item['email']; ?></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
-					<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
 				</div>
+				
+				<h2 class="sub-header">活动列表</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>activity id</th>
+								<th>content</th>
+								<th>memberlimit</th>
+								<th>starttime</th>
+								<th>endtime</th>
+								<th>updatetime</th>
+							</tr>
+						</thead>
+						<tbody id="tbody02">
+							<?php foreach ($activities as $activities_item): ?>
+							<tr>
+								<td><?php echo $activities_item['activityid']; ?></td>
+								<td><?php echo $activities_item['content']; ?></td>
+								<td><?php echo $activities_item['memberlimit']; ?></td>
+								<td><?php echo $activities_item['starttime']; ?></td>
+								<td><?php echo $activities_item['endtime']; ?></td>
+								<td><?php echo $activities_item['updatetime']; ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				
+				<h2 class="sub-header">圈子列表</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>circle id</th>
+								<th>theme</th>
+								<th>memberlimit</th>
+							</tr>
+						</thead>
+						<tbody id="tbody03">
+							<?php foreach ($circles as $circles_item): ?>
+							<tr>
+								<td><?php echo $circles_item['circleid']; ?></td>
+								<td><?php echo $circles_item['theme']; ?></td>
+								<td><?php echo $circles_item['memberlimit']; ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+
+				<h2 class="sub-header">话题列表</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>topic id</th>
+								<th>circle id</th>
+								<th>content</th>
+								<th>updatetime</th>
+							</tr>
+						</thead>
+						<tbody id="tbody04">
+							<?php foreach ($topics as $topics_item): ?>
+							<tr>
+								<td><?php echo $topics_item['topicid']; ?></td>
+								<td><?php echo $topics_item['circleid']; ?></td>
+								<td><?php echo $topics_item['content']; ?></td>
+								<td><?php echo $topics_item['updatetime']; ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+
+				<h2 class="sub-header">动态列表</h2>
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>news id</th>
+								<th>author id</th>
+								<th>content</th>
+								<th>updatetime</th>
+							</tr>
+						</thead>
+						<tbody id="tbody05">
+							<?php foreach ($news as $news_item): ?>
+							<tr>
+								<td><?php echo $news_item['newsid']; ?></td>
+								<td><?php echo $news_item['authorid']; ?></td>
+								<td><?php echo $news_item['content']; ?></td>
+								<td><?php echo $news_item['updatetime']; ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -245,6 +315,6 @@
 	<script type="text/javascript" src="plugins/jquery.appear.js"></script>
 
 	<!-- Initialization of Plugins -->
-	<script type="text/javascript" src="js/discovery.js"></script>
+	<script type="text/javascript" src="js/list.js"></script>
 </body>
 </html>

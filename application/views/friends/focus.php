@@ -114,16 +114,16 @@
 										<ul class="nav navbar-nav navbar-right ux">
 											<li><a href="<?php echo site_url('/Account/overview'); ?>">我</a></li>
 											<li><a href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
-											<li class="active"><a
-												href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
-											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
+											<li><a href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
+											<li class="active">
+											<a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
 												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span
 													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
-													<li><a href="#">个人设置</a></li>
-													<li><a href="#">我的账号</a></li>
-													<li><a href="#">我的好友</a></li>
+													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
+													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
+													<li><a href="<?php echo site_url('/Friend/overview')?>">我的好友</a></li>
 													<li class="divider"></li>
 													<li>
 													
@@ -168,7 +168,7 @@
 						<li id="btn3"><a id="word3"
 							href="<?php echo site_url('/Friend/my_circle')?>">我的圈子</a></li>
 						<li id="btn4"><a id="word4"
-							href="<?php echo site_url('/Friend/circle_updates')?>">圈子动态</a></li>
+							href="<?php echo site_url('/Friend/circle_topics')?>">圈子话题</a></li>
 					</ul>
 				</div>
 			</div>
@@ -199,8 +199,8 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>friends/circles id</th>
-								<th>friends/circles name</th>
+								<th>friends id</th>
+								<th>friends name</th>
 								<th>updates</th>
 							</tr>
 						</thead>

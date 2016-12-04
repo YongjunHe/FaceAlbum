@@ -118,12 +118,12 @@
 											<li><a href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
 											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
-												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?><span class="caret"></span>
-											</a>
+												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?><span
+													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
-													<li><a href="#">个人设置</a></li>
-													<li><a href="#">我的账号</a></li>
-													<li><a href="#">我的好友</a></li>
+													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
+													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
+													<li><a href="<?php echo site_url('/Friend/overview')?>">我的好友</a></li>
 													<li class="divider"></li>
 													<li><a href="<?php echo site_url('/Account/logout')?>">退出登录</a></li>
 												</ul></li>
@@ -162,9 +162,10 @@
 								<img src="images/portfolio-3.jpg" alt="userphoto">
 								<div class="caption">
 									<h3 class="text-center"><?php echo $this->session->userdata ( 'username' )?></h3>
-									<a href="#" class="btn btn-primary" role="button">好友<span
-										class="badge">4</span></a> <a href="#" class="btn btn-primary"
-										role="button">圈子<span class="badge">4</span></a>
+									<a href="<?php echo site_url('/Friend/overview')?>"
+										class="btn btn-primary" role="button">好友<span class="badge">3</span></a>
+									<a href="<?php echo site_url('/Friend/my_circle')?>"
+										class="btn btn-primary" role="button">圈子<span class="badge">2</span></a>
 								</div>
 							</div>
 						</div>
@@ -177,13 +178,16 @@
 					<div class="row">
 						<div class="col-md-3 list-group">
 							<div style="padding-left: 15px">
-								<a href="#" class="list-group-item list-group-item-success"> <span
-									class="badge">14</span> 活动推荐
-								</a> <a href="#" class="list-group-item list-group-item-info"> <span
-									class="badge">14</span> 好友动态
-								</a> </a> <a href="#"
+								<a href="<?php echo site_url('/Activity/overview')?>"
+									class="list-group-item list-group-item-success"> <span
+									class="badge">4</span> 活动推荐
+								</a> <a href="<?php echo site_url('/Friend/friend_updates')?>"
+									class="list-group-item list-group-item-info"> <span
+									class="badge">2</span> 好友动态
+								</a> </a> <a
+									href="<?php echo site_url('/Friend/circle_topics')?>"
 									class="list-group-item list-group-item-warning"> <span
-									class="badge">14</span> 圈子动态
+									class="badge">2</span> 圈子话题
 								</a>
 							</div>
 						</div>
@@ -193,7 +197,10 @@
 									<img src="images/testimonial-1.png" alt="...">
 								</div>
 								<a href="#" class="media-body">
-									<h1 class="media-heading" style="color: white">训练历史</h1>
+									<h1 class="media-heading" style="color: white">
+										<a style="color: white"
+											href="<?php echo site_url('/Health/overview')?>">训练历史</a>
+									</h1>
 								</a>
 							</div>
 						</div>
@@ -203,7 +210,10 @@
 									<img src="images/testimonial-2.png" alt="...">
 								</div>
 								<a href="#" class="media-body">
-									<h1 class="media-heading" style="color: white">身体数据</h1>
+									<h1 class="media-heading">
+										<a style="color: white"
+											href="<?php echo site_url('/Health/health')?>">身体数据</a>
+									</h1>
 								</a>
 							</div>
 						</div>
@@ -213,7 +223,10 @@
 									<img src="images/testimonial-3.png" alt="...">
 								</div>
 								<a href="#" class="media-body">
-									<h1 class="media-heading" style="color: white">训练等级</h1>
+									<h1 class="media-heading" style="color: white">
+										<a style="color: white"
+											href="<?php echo site_url('/Health/plan')?>">训练等级</a>
+									</h1>
 								</a>
 							</div>
 						</div>

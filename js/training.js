@@ -2,33 +2,77 @@
  * 
  */
 (function($){
-	$(document).ready(function(){
-		$("#btn1").click(function() {
-			$(this).css("background-color","#336699");
-			$("#btn2,#btn3,#btn4").css("background-color","");
-			$("#word1").css("color","white");
-			$("#word2,#word3,#word4").css("color","");
-		});
-		$("#btn2").click(function() {
-			$(this).css("background-color","#336699");
-			$("#btn1,#btn3,#btn4").css("background-color","");
-			$("#word2").css("color","white");
-			$("#word1,#word3,#word4").css("color","");
-		});
-		$("#btn3").click(function() {
-			$(this).css("background-color","#336699");
-			$("#btn2,#btn1,#btn4").css("background-color","");
-			$("#word3").css("color","white");
-			$("#word2,#word1,#word4").css("color","");
-		});
-		$("#btn4").click(function() {
-			$(this).css("background-color","#336699");
-			$("#btn2,#btn3,#btn1").css("background-color","");
-			$("#word4").css("color","white");
-			$("#word2,#word3,#word1").css("color","");
-		});
-	});
+//	$(document).ready(function(){
+//			$.ajax({
+//				url : $("#site_url").text()+"/Training",
+//				type : "POST",
+//				dataType : "json",
+//				data : {
+//					Message : 1
+//				},
+//				success : function(Msg) {
+//					var result="";
+//					$.each(Msg,function(i,item){
+//						result+=item.userid;
+//					})
+//					alert(result);
+//				},
+//				error : function() {
+//					alert("ERROR");
+//				}
+//			});
+//
+//	});
 	
+	$(document).ready(function(){
+		$.ajax({
+			url : $("#site_url").text()+"/Training?userid=1",
+			type : "GET",
+			dataType : "json",
+			success : function(Msg) {
+	            array_x=[];
+	            array_y1=[];
+	            array_y2=[];
+				$.each(Msg,function(i,item){
+					array_x.push(item.date);
+					array_y1.push(parseFloat(item.moveKm));
+					array_y2.push(parseFloat(item.sleepHour));
+				})
+
+		        var myChart = echarts.init(document.getElementById('main1'));
+
+		        // 指定图表的配置项和数据
+		        var option = {
+		            title: {
+		                text: 'walk distance of this week'
+		            },
+		            tooltip: {},
+		            legend: {
+		                data:['KM','HOUR']
+		            },
+		            xAxis: {
+		                data: array_x,
+		            },
+		            yAxis: {},
+		            series: [{
+		                name: 'KM',
+		                type: 'bar',
+		                data: array_y1,
+		            		},{
+		                name: 'HOUR',
+		                type: 'bar',
+		                data: array_y2,
+		                    }]
+		        };
+
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+			},
+			error : function() {
+				alert("ERROR");
+			}
+		});
+	});	
 	//固定tag
 	$(document).ready(function(){
 		// 指定的高度，侧边栏距顶部距离+侧边栏高度+可视页面的高度

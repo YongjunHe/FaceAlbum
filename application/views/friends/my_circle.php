@@ -114,16 +114,16 @@
 										<ul class="nav navbar-nav navbar-right ux">
 											<li><a href="<?php echo site_url('/Account/overview'); ?>">我</a></li>
 											<li><a href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
-											<li class="active"><a
-												href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
-											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
+											<li><a href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
+											<li class="active">
+											<a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
 												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span
 													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
-													<li><a href="#">个人设置</a></li>
-													<li><a href="#">我的账号</a></li>
-													<li><a href="#">我的好友</a></li>
+													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
+													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
+													<li><a href="<?php echo site_url('/Friend/overview')?>">我的好友</a></li>
 													<li class="divider"></li>
 													<li>
 													
@@ -168,13 +168,13 @@
 							style="color: white;"
 							href="<?php echo site_url('/Friend/my_circle')?>">我的圈子</a></li>
 						<li id="btn4"><a id="word4"
-							href="<?php echo site_url('/Friend/circle_updates')?>">圈子动态</a></li>
+							href="<?php echo site_url('/Friend/circle_topics')?>">圈子话题</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-9 col-md-10 main"
 				style="background-color: #FBFBEA">
-				<h1 class="page-header">Overview</h1>
+				<h1 class="page-header">My Circle</h1>
 
 				<div class="row placeholders">
 					<div class="col-xs-6 col-sm-3 placeholder">
@@ -199,25 +199,29 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>friends/circles id</th>
-								<th>friends/circles name</th>
-								<th>updates</th>
+								<th>circle id</th>
+								<th>author id</th>
+								<th>circle theme</th>
+								<th>memberlimit</th>
+								<th>topics</th>
 							</tr>
 						</thead>
 						<tbody id="tbody01">
 							<?php foreach ($circles as $circles_item): ?>
 							<tr>
-								<td><?php echo $circles_item['userid']; ?></td>
-								<td><?php echo $circles_item['username']; ?></td>
+								<td><?php echo $circles_item['circleid']; ?></td>
+								<td><?php echo $circles_item['creatorid']; ?></td>
+								<td><?php echo $circles_item['theme']; ?></td>
+								<td><?php echo $circles_item['memberlimit']; ?></td>
 								<td>5</td>
-								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
+								<td><button type="button" class="btn btn-primary btn-xs">exit</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 					<form class="form-inline" action="" method="post" role="form">
 						<div class="form-group">
-							<label class="sr-only" for="userid">circleid</label> <input
+							<label class="sr-only" for="circleid">circleid</label> <input
 								type="text" name="circleid" class="form-control" id="circleid"
 								placeholder="circleid">
 						</div>

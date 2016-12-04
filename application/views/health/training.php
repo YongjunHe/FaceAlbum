@@ -42,6 +42,8 @@
 <!-- mystyle css -->
 <link href="css/mystyle.css" rel="stylesheet">
 
+<!-- echarts javascript -->
+<script type="text/javascript" src="plugins/echarts.min.js"></script>
 </head>
 
 <body class="no-trans">
@@ -113,18 +115,19 @@
 										id="navbar-collapse-1">
 										<ul class="nav navbar-nav navbar-right ux">
 											<li><a href="<?php echo site_url('/Account/overview'); ?>">我</a></li>
-											<li class="active"><a href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
+											<li class="active"><a
+												href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
 											<li><a href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
 											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
-												data-toggle="dropdown"> 用户名 <span class="caret"></span>
-											</a>
+												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span
+													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
-													<li><a href="#">个人设置</a></li>
-													<li><a href="#">我的账号</a></li>
-													<li><a href="#">我的好友</a></li>
+													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
+													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
+													<li><a href="<?php echo site_url('/Friend/overview')?>">我的好友</a></li>
 													<li class="divider"></li>
-													<li><li><a href="<?php echo site_url('/Account/logout')?>">退出登录</a></li>
+													<li><a href="<?php echo site_url('/Account/logout')?>">退出登录</a></li>
 												</ul></li>
 										</ul>
 									</div>
@@ -157,17 +160,19 @@
 				<div class="fixed-siderbar">
 					<div class="space"></div>
 					<ul class="nav nav-sidebar">
-						<li id="btn1" style="background-color: #336699;">
-						<a id="word1" style="color: white;">Overview</a></li>
-						<li id="btn2"><a id="word2">我的运动</a></li>
-						<li id="btn3"><a id="word3">身体管理</a></li>
-						<li id="btn4"><a id="word4">训练计划</a></li>
+						<li id="btn1" style="background-color: #336699;"><a id="word1"
+							style="color: white;"
+							href="<?php echo site_url('/Health/overview')?>">我的运动</a></li>
+						<li id="btn2"><a id="word2"
+							href="<?php echo site_url('/Health/health')?>">身体管理</a></li>
+						<li id="btn3"><a id="word3"
+							href="<?php echo site_url('/Health/plan')?>">训练计划</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-9 col-md-10 main"
 				style="background-color: #FBFBEA">
-				<h1 class="page-header">Overview</h1>
+				<h1 class="page-header">我的运动</h1>
 
 				<div class="row placeholders">
 					<div class="col-xs-6 col-sm-3 placeholder">
@@ -186,38 +191,10 @@
 						<h4>训练计划</h4>
 					</div>
 				</div>
-
-				<h2 class="sub-header">Section title</h2>
-				<div class="table-responsive">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Header</th>
-								<th>Header</th>
-								<th>Header</th>
-								<th>Header</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1,001</td>
-								<td>Lorem</td>
-								<td>ipsum</td>
-								<td>dolor</td>
-								<td>sit</td>
-							</tr>
-							<tr>
-								<td>1,002</td>
-								<td>amet</td>
-								<td>consectetur</td>
-								<td>adipiscing</td>
-								<td>elit</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				
+	<div id="main1" style="width: 600px;height:400px;"></div>				
 			</div>
+			<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
 		</div>
 	</div>
 	<!-- banner end -->
@@ -243,7 +220,5 @@
 
 	<!-- Initialization of Plugins -->
 	<script type="text/javascript" src="js/training.js"></script>
-	
-
 </body>
 </html>

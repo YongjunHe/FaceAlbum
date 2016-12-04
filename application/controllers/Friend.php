@@ -13,7 +13,7 @@ class Friend extends CI_Controller {
 	public function overview() {
 		$this->load->library ( 'form_validation' );
 		
-		$this->form_validation->set_rules ( 'friendid', '朋友id', 'required' );
+		$this->form_validation->set_rules ( 'friendid', '朋友id', 'required|callback_friendid_check' );
 		
 		$username = $this->session->userdata ( 'username' );
 		$row = $this->account_model->get_by_username ( $username );
@@ -28,13 +28,11 @@ class Friend extends CI_Controller {
 		$this->load->view ( 'friends/focus', $data );
 	}
 	public function friend_updates() {
-		$this->load->view ( 'friends/friend_updates' );
-	}
-	public function my_circle() {
-		$this->load->view ( 'friends/my_circle' );
-	}
-	public function circle_updates() {
-		$this->load->view ( 'friends/circle_updates' );
+		$username = $this->session->userdata ( 'username' );
+		$row = $this->account_model->get_by_username ( $username );
+		$userid = $row->userid;
+		$data ['updates'] = $this->friend_model->get_friend_updates ( $userid );
+		$this->load->view ( 'friends/friend_updates' ,$data);
 	}
 	public function delete_friend() {
 		$username = $this->session->userdata ( 'username' );
@@ -49,11 +47,51 @@ class Friend extends CI_Controller {
 			$data = '[{"result":"Failure"}]';
 		echo $data;
 	}
-	function userid_check($str) {
-		if ($this->Account_model->get_by_userid ( $str )) {
+	function friendid_check($friendid) {
+		if ($this->account_model->get_by_userid ( $friendid )) {
 			return TRUE;
 		} else {
-			$this->form_validation->set_message ( 'userid_check', '用户不存在' );
+			$this->form_validation->set_message ( 'friendid_check', '用户不存在' );
+			return FALSE;
+		}
+	}
+	public function my_circle() {
+		$this->load->library ( 'form_validation' );
+		
+		$this->form_validation->set_rules ( 'circleid', '圈子id', 'required' );
+		
+		$username = $this->session->userdata ( 'username' );
+		$row = $this->account_model->get_by_username ( $username );
+		$userid = $row->userid;
+		
+		if ($this->form_validation->run () == TRUE) {
+			$circleid = $this->input->post ( 'circleid' );
+			$this->friend_model->join_circles ( $userid, $circleid );
+		}
+		$data ['circles'] = $this->friend_model->get_circles ( $userid );
+		$this->load->view ( 'friends/my_circle', $data );
+	}
+	public function circle_topics() {
+		$data ['topics'] = $this->friend_model->get_circle_topic ();
+		$this->load->view ( 'friends/circle_topics', $data );
+	}
+	public function exit_circle() {
+		$username = $this->session->userdata ( 'username' );
+		$row = $this->account_model->get_by_username ( $username );
+		$userid = $row->userid;
+		// 获取用户Id
+		$circleid = $this->input->post ( 'Message' );
+		if ($this->friend_model->exit_circles ( $userid, $circleid )) {
+			$data = '[{"result":"Successful exitance"}]';
+		} else
+			$data = '[{"result":"Failure"}]';
+		echo $data;
+	}
+	function circleid_check($circleid) {
+		if ($this->friend_model->get_by_circleid ( $circleid )) {
+			return TRUE;
+		} else {
+			$this->form_validation->set_message ( 'friendid_check', '用户不存在' );
 			return FALSE;
 		}
 	}

@@ -114,12 +114,12 @@
 										<ul class="nav navbar-nav navbar-right ux">
 											<li><a href="<?php echo site_url('/Account/overview'); ?>">我</a></li>
 											<li><a href="<?php echo site_url('/Health/overview'); ?>">训练</a></li>
-											<li class="active"><a
-												href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
-											<li><a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
+											<li><a href="<?php echo site_url('/Activity/overview'); ?>">发现</a></li>
+											<li  class="active">
+											<a href="<?php echo site_url('/Friend/overview'); ?>">关注</a></li>
 											<li class="dropdown"><a href="#" class="dropdown-toggle"
-												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span class="caret"></span>
-											</a>
+												data-toggle="dropdown"><?php echo $this->session->userdata ( 'username' )?> <span
+													class="caret"></span> </a>
 												<ul class="dropdown-menu dropdown-menu-left" role="menu">
 													<li><a href="<?php echo site_url('/Account/settings'); ?>">个人设置</a></li>
 													<li><a href="<?php echo site_url('/Account/overview'); ?>">我的账号</a></li>
@@ -160,34 +160,37 @@
 				<div class="fixed-siderbar">
 					<div class="space"></div>
 					<ul class="nav nav-sidebar">
-						<li id="btn1" style="background-color: #336699;"><a id="word1"
-							style="color: white;">Overview</a></li>
+						<li id="btn1"><a id="word1"
+							href="<?php echo site_url('/Friend/overview')?>">我的好友</a></li>
 						<li id="btn2"><a id="word2"
-							href="<?php echo site_url('/Activity/myActivity')?>">我的竞赛</a></li>
-						<li id="btn3"><a id="word3">单人竞赛</a></li>
-						<li id="btn4"><a id="word4">多人竞赛</a></li>
+							href="<?php echo site_url('/Friend/friend_updates')?>">好友动态</a></li>
+						<li id="btn3"><a id="word3"
+							href="<?php echo site_url('/Friend/my_circle')?>">我的圈子</a></li>
+						<li id="btn4" style="background-color: #336699;">
+							<a id="word4" style="color: white;"
+							href="<?php echo site_url('/Friend/circle_topics')?>">圈子话题</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-9 col-md-10 main"
 				style="background-color: #FBFBEA">
-				<h1 class="page-header">Overview</h1>
+				<h1 class="page-header">Circle Topics</h1>
 
 				<div class="row placeholders">
 					<div class="col-xs-6 col-sm-3 placeholder">
 						<img src="images/fitness-2.jpg" class="img-responsive"
 							alt="Generic placeholder thumbnail">
-						<h4>我的竞赛</h4>
+						<h4>我的好友</h4>
 					</div>
 					<div class="col-xs-6 col-sm-3 placeholder">
 						<img src="images/health-1.jpg" class="img-responsive"
 							alt="Generic placeholder thumbnail">
-						<h4>单人竞赛</h4>
+						<h4>好友动态</h4>
 					</div>
 					<div class="col-xs-6 col-sm-3 placeholder">
 						<img src="images/fitness-3.jpg" class="img-responsive"
 							alt="Generic placeholder thumbnail">
-						<h4>多人竞赛</h4>
+						<h4>我的圈子</h4>
 					</div>
 				</div>
 
@@ -196,28 +199,34 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>activityid</th>
+								<th>topics id</th>
+								<th>circles id</th>
+								<th>author id</th>
 								<th>content</th>
-								<th>joiner</th>
-								<th>memberlimit</th>
-								<th>starttime</th>
-								<th>endtime</th>
+								<th>updatetime</th>
 							</tr>
 						</thead>
 						<tbody id="tbody01">
-							<?php foreach ($activities as $activities_item): ?>
+							<?php foreach ($topics as $topics_item): ?>
 							<tr>
-								<td><?php echo $activities_item['activityid']; ?></td>
-								<td><?php echo $activities_item['content']; ?></td>
-								<td><?php echo $activities_item['joiner']; ?></td>
-								<td><?php echo $activities_item['memberlimit']; ?></td>
-								<td><?php echo $activities_item['starttime']; ?></td>
-								<td><?php echo $activities_item['endtime']; ?></td>
-								<td><button type="button" class="btn btn-primary btn-xs"><?php echo $status; ?></button></td>
+								<td><?php echo $topics_item['topicid']; ?></td>
+								<td><?php echo $topics_item['circleid']; ?></td>
+								<td><?php echo $topics_item['authorid']; ?></td>
+								<td><?php echo $topics_item['content']; ?></td>
+								<td><?php echo $topics_item['updatetime']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">commemt</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<form class="form-inline" action="" method="post" role="form">
+						<div class="form-group">
+							<label class="sr-only" for="topic">topic</label> <input
+								type="text" name="topic" class="form-control" id="topic"
+								placeholder="topic">
+						</div>
+						<button type="submit" class="btn btn-success">发表话题</button>
+					</form>
 					<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
 				</div>
 			</div>
@@ -245,6 +254,6 @@
 	<script type="text/javascript" src="plugins/jquery.appear.js"></script>
 
 	<!-- Initialization of Plugins -->
-	<script type="text/javascript" src="js/discovery.js"></script>
+	<script type="text/javascript" src="js/focus.js"></script>
 </body>
 </html>

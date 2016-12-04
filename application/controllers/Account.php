@@ -17,6 +17,30 @@ class Account extends CI_Controller {
 	function overview() {
 		$this->load->view ( 'account/homepage' );
 	}
+	function settings() {
+		$this->form_validation->set_error_delimiters ( '<span class="error">', '</span>' );
+		
+		$username = $this->session->userdata ( 'username' ); // 用户名
+		$data ['userMsg'] = $this->Account_model->get_by_username ( $username );
+		
+		if ($this->form_validation->run () == FALSE) {
+			$this->load->view ( 'account/personal_settings', $data );
+		} else {
+			$username = $this->session->userdata ( 'username' );
+			$password = md5 ( $this->salt . $this->input->post ( 'password' ) );
+			$email = $this->input->post ( 'email' );
+			$tel = $this->input->post ( 'telnum' );
+			$age = $this->input->post ( 'age' );
+			$height = $this->input->post ( 'height' );
+			$weight = $this->input->post ( 'weight' );
+			if ($this->Account_model->update_user ( $username, $password, $email, $tel, $age, $height, $weight )) {
+				$data ['message'] = "The information has now been set! You can go " . anchor ( 'account/overview', 'homepage' ) . '.';
+			} else {
+				$data ['message'] = "There was a problem when set your information. You can set " . anchor ( 'account/settings', 'here' ) . ' again.';
+			}
+			$this->load->view ( 'account/note', $data );
+		}
+	}
 	/**
 	 * 接收、验证登录表单
 	 * 表单规则在配置文件:/config/form_validation.php
@@ -45,7 +69,13 @@ class Account extends CI_Controller {
 		} else {
 			// 注册session,设定登录状态
 			$this->Account_model->login ( $this->_username );
-			$data ['message'] = $this->session->userdata ( 'username' ) . ' You have logged in successfully! Now take a look at the ' . anchor ( 'account/overview', 'homepage' );
+			
+			$row = $this->Account_model->get_by_username ( $this->_username );
+			$identity = $row->identity;
+			if ($identity == "user")
+				$data ['message'] = $this->session->userdata ( 'username' ) . ' You have logged in successfully! Now take a look at the ' . anchor ( 'account/overview', 'homepage' );
+			else
+				$data ['message'] = 'Adminstrator You have logged in successfully! Now take a look at the ' . anchor ( 'management/overview', 'System Management' );
 			$this->load->view ( 'account/note', $data );
 		}
 	}

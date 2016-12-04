@@ -3,33 +3,7 @@
  */
 (function($){
 	$(document).ready(function(){
-		$("button.btn").click(function() {
-			var $friendid = $(this).parent().parent("tr").children("td").eq(0).text();
-			var $status=$(this).parent().parent("tr").children("td").eq(3).text();
-			if($status=="delete"){
-				$.ajax({
-					url : $("#site_url").text()+"/Friend/delete_friend",
-					type : "POST",
-					dataType : "json",
-					data : {
-						Message : $friendid
-					},
-					success : function(Msg) {
-						var result="";
-						$.each(Msg,function(i,item){
-							result+=item.result;
-						})
-						alert(result);
-					},
-					error : function() {
-						alert("You have not this friend");
-					}
-				});
-			}
-			$(this).parent().parent("tr").children("td").eq(3).text($status);
-		});
-	});
-		
+	
 	//固定tag
 	$(document).ready(function(){
 		// 指定的高度，侧边栏距顶部距离+侧边栏高度+可视页面的高度

@@ -4,15 +4,15 @@
 (function($){
 	$(document).ready(function(){
 		$("button.btn").click(function() {
-			var $friendid = $(this).parent().parent("tr").children("td").eq(0).text();
-			var $status=$(this).parent().parent("tr").children("td").eq(3).text();
-			if($status=="delete"){
+			var $circleid = $(this).parent().parent("tr").children("td").eq(0).text();
+			var $status=$(this).parent().parent("tr").children("td").eq(5).text();
+			if($status=="exit"){
 				$.ajax({
-					url : $("#site_url").text()+"/Friend/delete_friend",
+					url : $("#site_url").text()+"/Friend/exit_circle",
 					type : "POST",
 					dataType : "json",
 					data : {
-						Message : $friendid
+						Message : $circleid
 					},
 					success : function(Msg) {
 						var result="";
@@ -22,11 +22,11 @@
 						alert(result);
 					},
 					error : function() {
-						alert("You have not this friend");
+						alert("You have not this circle");
 					}
 				});
 			}
-			$(this).parent().parent("tr").children("td").eq(3).text($status);
+			$(this).parent().parent("tr").children("td").eq(5).text($status);
 		});
 	});
 		

@@ -83,6 +83,21 @@ class Account_model extends CI_Model {
 		}
 		return FALSE;
 	}
+	function update_user($username, $password, $email, $tel, $age, $height, $weight) {
+		$data = array (
+				'password' => $password,
+				'email' => $email,
+				'tel' => $tel,
+				'age' => $age,
+				'height' => $height,
+				'weight' => $weight 
+		);
+		$this->db->where ( 'username', $username );
+		$this->db->update ( 'user', $data );
+		if ($this->db->affected_rows () > 0)
+			return TRUE;
+		return FALSE;
+	}
 	
 	/**
 	 * ¼ì²éÓÊÏäÕËºÅÊÇ·ñ´æÔÚ.
