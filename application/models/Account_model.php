@@ -85,7 +85,7 @@ class Account_model extends CI_Model {
 	}
 	function update_user($username, $password, $email, $tel, $age, $height, $weight) {
 		$data = array (
-				'password' => $password,
+				'password' => md5 ( "HOBBY" . $password ),
 				'email' => $email,
 				'tel' => $tel,
 				'age' => $age,

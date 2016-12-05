@@ -1,7 +1,49 @@
 /**
  * 
  */
-(function($){		
+(function($){
+	$(document).ready(function(){
+		$("button.btn-primary").click(function() {
+			var $id = $(this).parent().parent("tr").children("td").eq(0).text();
+			var $tbodyid= $(this).parents("tbody").attr("id");
+			var $url;
+			if($tbodyid=="tbody01"){
+				$url=$("#site_url").text()+"/Management/delete_user";
+			}
+			if($tbodyid=="tbody02"){
+				$url=$("#site_url").text()+"/Management/delete_activity";
+			}
+			if($tbodyid=="tbody03"){
+				$url=$("#site_url").text()+"/Management/delete_circle";
+			}
+			if($tbodyid=="tbody04"){
+				$url=$("#site_url").text()+"/Management/delete_topic";
+			}
+			if($tbodyid=="tbody05"){
+				$url=$("#site_url").text()+"/Management/delete_news";
+			}
+			$.ajax({
+				url : $url,
+				type : "POST",
+				dataType : "text",
+				data : {
+					Message : $id
+				},
+				success : function(Msg) {
+					var result="";
+					$.each(Msg,function(i,item){
+					result+=item.result;
+					})
+					alert(result);
+				},
+				error : function() {
+//					alert("error");
+				}
+			});
+			window.location.reload();//刷新当前页面.
+		});
+	});
+		
 	//固定tag
 	$(document).ready(function(){
 		// 指定的高度，侧边栏距顶部距离+侧边栏高度+可视页面的高度

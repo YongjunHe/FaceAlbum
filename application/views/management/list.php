@@ -166,8 +166,8 @@
 			<div class="col-sm-9 col-md-10 main"
 				style="background-color: #FBFBEA">
 				<h1 class="page-header">Overview</h1>
-				<p id='site_url' hidden="hidden"><?php echo site_url()?></p>	
-						
+				<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
+
 				<h2 class="sub-header">用户列表</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -186,19 +186,51 @@
 								<td><?php echo $users_item['username']; ?></td>
 								<td><?php echo $users_item['identity']; ?></td>
 								<td><?php echo $users_item['email']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<form class="form-inline" role="form" action="" method="post"
+						id="form01">
+						<div class="form-group">
+							<label class="sr-only" for="userid">userid</label> <input
+								type="text" class="form-control" id="userid" name="userid"
+								placeholder="userid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="content">username</label> <input
+								type="text" class="form-control" name="username" id="username"
+								placeholder="username">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="password">password</label> <input
+								type="text" class="form-control" id="password" name="password"
+								placeholder="password">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="identity">identity</label> <input
+								type="text" class="form-control" name="identity" id="identity"
+								placeholder="identity">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="email">email</label> <input
+								type="text" class="form-control" id="email" name="email"
+								placeholder="email">
+						</div>
+						<button type="submit" class="btn btn-success">增添/修改用户</button>
+					</form>
 				</div>
-				
+
 				<h2 class="sub-header">活动列表</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>activity id</th>
+								<th>author id</th>
 								<th>content</th>
+								<th>joiner</th>
 								<th>memberlimit</th>
 								<th>starttime</th>
 								<th>endtime</th>
@@ -209,23 +241,71 @@
 							<?php foreach ($activities as $activities_item): ?>
 							<tr>
 								<td><?php echo $activities_item['activityid']; ?></td>
+								<td><?php echo $activities_item['authorid']; ?></td>
 								<td><?php echo $activities_item['content']; ?></td>
+								<td><?php echo $activities_item['joiner']; ?></td>
 								<td><?php echo $activities_item['memberlimit']; ?></td>
 								<td><?php echo $activities_item['starttime']; ?></td>
 								<td><?php echo $activities_item['endtime']; ?></td>
 								<td><?php echo $activities_item['updatetime']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<form class="form-inline" role="form" action="<?php echo site_url('/management/change_activity')?>" method="post"
+						id="form02">
+						<div class="form-group">
+							<label class="sr-only" for="activityid">activityid</label> <input
+								type="text" class="form-control" id="activityid"
+								name="activityid" placeholder="activityid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="authorid">authorid</label> <input
+								type="text" class="form-control" id="authorid" name="authorid"
+								placeholder="authorid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="content">content</label> <input
+								type="text" class="form-control" name="content" id="content"
+								placeholder="content">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="joiner">joiner</label> <input
+								type="text" class="form-control" name="joiner" id="joiner"
+								placeholder="joiner">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="memberlimit">memberlimit</label> <input
+								type="text" class="form-control" name="memberlimit"
+								id="memberlimit" placeholder="memberlimit">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="starttime">starttime</label> <input
+								type="text" class="form-control" id="starttime" name="starttime"
+								placeholder="starttime">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="endtime">endtime</label> <input
+								type="text" class="form-control" name="endtime" id="endtime"
+								placeholder="endtime">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for=updatetime">updatetime</label> <input
+								type="text" class="form-control" name="updatetime"
+								id="updatetime" placeholder="updatetime">
+						</div>
+						<button type="submit" class="btn btn-success">增添/修改活动</button>
+					</form>
 				</div>
-				
+
 				<h2 class="sub-header">圈子列表</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>circle id</th>
+								<th>creator id</th>
 								<th>theme</th>
 								<th>memberlimit</th>
 							</tr>
@@ -234,12 +314,39 @@
 							<?php foreach ($circles as $circles_item): ?>
 							<tr>
 								<td><?php echo $circles_item['circleid']; ?></td>
+								<td><?php echo $circles_item['creatorid']; ?></td>
 								<td><?php echo $circles_item['theme']; ?></td>
 								<td><?php echo $circles_item['memberlimit']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<form class="form-inline" role="form"
+						action="<?php echo site_url('/management/change_circle')?>"
+						method="post" id="form03">
+						<div class="form-group">
+							<label class="sr-only" for="circleid">circleid</label> <input
+								type="text" class="form-control" id="circleid" name="circleid"
+								placeholder="circleid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="creatorid">creatorid</label> <input
+								type="text" class="form-control" id="creatorid" name="creatorid"
+								placeholder="creatorid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="theme">theme</label> <input
+								type="text" class="form-control" name="theme" id="theme"
+								placeholder="theme">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="memberlimit">memberlimit</label> <input
+								type="text" class="form-control" name="memberlimit"
+								id="memberlimit" placeholder="memberlimit">
+						</div>
+						<button type="submit" class="btn btn-success">增添/修改圈子</button>
+					</form>
 				</div>
 
 				<h2 class="sub-header">话题列表</h2>
@@ -249,6 +356,7 @@
 							<tr>
 								<th>topic id</th>
 								<th>circle id</th>
+								<th>author id</th>
 								<th>content</th>
 								<th>updatetime</th>
 							</tr>
@@ -258,12 +366,43 @@
 							<tr>
 								<td><?php echo $topics_item['topicid']; ?></td>
 								<td><?php echo $topics_item['circleid']; ?></td>
+								<td><?php echo $topics_item['authorid']; ?></td>
 								<td><?php echo $topics_item['content']; ?></td>
 								<td><?php echo $topics_item['updatetime']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<form class="form-inline" role="form" action="" method="post"
+						id="form04">
+						<div class="form-group">
+							<label class="sr-only" for="topicid">topicid</label> <input
+								type="text" class="form-control" id="topicid" name="topicid"
+								placeholder="topicid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="circleid">circleid</label> <input
+								type="text" class="form-control" name="circleid" id="circleid"
+								placeholder="circleid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="authorid">authorid</label> <input
+								type="text" class="form-control" name="authorid" id="authorid"
+								placeholder="authorid">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="content">content</label> <input
+								type="text" class="form-control" name="content" id="content"
+								placeholder="content">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="updatetime">updatetime</label> <input
+								type="text" class="form-control" name="updatetime"
+								id="updatetime" placeholder="updatetime">
+						</div>
+						<button type="submit" class="btn btn-success">增添/修改计划</button>
+					</form>
 				</div>
 
 				<h2 class="sub-header">动态列表</h2>
@@ -284,13 +423,14 @@
 								<td><?php echo $news_item['authorid']; ?></td>
 								<td><?php echo $news_item['content']; ?></td>
 								<td><?php echo $news_item['updatetime']; ?></td>
+								<td><button type="button" class="btn btn-primary btn-xs">delete</button></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
-				
 			</div>
+			<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
 		</div>
 	</div>
 	<!-- banner end -->

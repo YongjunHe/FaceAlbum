@@ -73,7 +73,7 @@ class Activity_model extends CI_Model {
 	
 	function delete_activity($activityid) {
 		$this->db->delete ( 'activity', array (
-				'activity' => $activity,
+				'activityid' => $activityid,
 		) );
 		if ($this->db->affected_rows () > 0)
 			return TRUE;

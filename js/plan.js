@@ -1,12 +1,17 @@
 /**
  * 
  */
+function isPlanid($planid) { 
+ var pattern = /^\d{0,20}$/; 
+ return pattern.test($planid); 
+}
+
 (function($){
 	$(document).ready(function(){
 			$("button.btn").click(function() {
 				var $planid = $(this).parent().parent("tr").children("td").eq(0).text();
 				var $status=$(this).parent().parent("tr").children("td").eq(4).text();
-				if($status=="delete"){
+				if($status=="delete"&&isPlaned($planid)){
 					$.ajax({
 						url : $("#site_url").text()+"/Health/delete_plan",
 						type : "POST",

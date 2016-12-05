@@ -192,7 +192,9 @@
 					</div>
 				</div>
 				
-	<div id="main1" style="width: 600px;height:400px;"></div>				
+	<div id="main1" style="width: 850px;height:500px;"></div>		
+	<div id="main2" style="width: 800px;height:500px;"></div>
+	<div id="main3" style="width: 800px;height:500px;"></div>						
 			</div>
 			<p id='site_url' hidden="hidden"><?php echo site_url()?></p>
 		</div>
