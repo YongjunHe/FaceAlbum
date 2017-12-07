@@ -1,192 +1,243 @@
 <?php
-class Account extends CI_Controller {
-	private $salt;
-	public function __construct() {
-		parent::__construct ();
-		$this->load->model ( 'Account_model' );
-		$this->load->helper ( array (
-				'form',
-				'url' 
-		) );
-		$this->load->library ( array (
-				'form_validation',
-				'session' 
-		) );
-		$this->salt = "HOBBY";
-	}
-	function overview() {
-		$this->load->view ( 'account/homepage' );
-	}
-	function settings() {
-		$this->form_validation->set_error_delimiters ( '<span class="error">', '</span>' );
-		
-		$username = $this->session->userdata ( 'username' ); // ÓÃ»§Ãû
-		$data ['userMsg'] = $this->Account_model->get_by_username ( $username );
-		
-		if ($this->form_validation->run () == FALSE) {
-			$this->load->view ( 'account/personal_settings', $data );
-		} else {
-			$username = $this->session->userdata ( 'username' );
-			$password = md5 ( $this->salt . $this->input->post ( 'password' ) );
-			$email = $this->input->post ( 'email' );
-			$tel = $this->input->post ( 'telnum' );
-			$age = $this->input->post ( 'age' );
-			$height = $this->input->post ( 'height' );
-			$weight = $this->input->post ( 'weight' );
-			if ($this->Account_model->update_user ( $username, $password, $email, $tel, $age, $height, $weight )) {
-				$data ['message'] = "The information has now been set! You can go " . anchor ( 'account/overview', 'homepage' ) . '.';
-			} else {
-				$data ['message'] = "There was a problem when set your information. You can set " . anchor ( 'account/settings', 'here' ) . ' again.';
-			}
-			$this->load->view ( 'account/note', $data );
-		}
-	}
-	/**
-	 * ½ÓÊÕ¡¢ÑéÖ¤µÇÂ¼±íµ¥
-	 * ±íµ¥¹æÔòÔÚÅäÖÃÎÄ¼ş:/config/form_validation.php
-	 * 'account/login'=>array( //µÇÂ¼±íµ¥µÄ¹æÔò
-	 * array(
-	 * 'field'=>'username',
-	 * 'label'=>'ÓÃ»§Ãû',
-	 * 'rules'=>'trim|required|xss_clean|callback_username_check'
-	 * ),
-	 * array(
-	 * 'field'=>'password',
-	 * 'label'=>'ÃÜÂë',
-	 * 'rules'=>'trim|required|xss_clean|callback_password_check'
-	 * )
-	 * )
-	 * ´íÎóÌáÊ¾ĞÅÏ¢ÔÚÎÄ¼ş£º/system/language/english/form_validation_lang.php
-	 */
-	function login() {
-		// ÉèÖÃ´íÎó¶¨½ç·û
-		$this->form_validation->set_error_delimiters ( '<span class="error">', '</span>' );
-		
-		$this->_username = $this->input->post ( 'username' ); // ÓÃ»§Ãû
-		
-		if ($this->form_validation->run () == FALSE) {
-			$this->load->view ( 'account/login' );
-		} else {
-			// ×¢²ásession,Éè¶¨µÇÂ¼×´Ì¬
-			$this->Account_model->login ( $this->_username );
-			
-			$row = $this->Account_model->get_by_username ( $this->_username );
-			$identity = $row->identity;
-			if ($identity == "user")
-				$data ['message'] = $this->session->userdata ( 'username' ) . ' You have logged in successfully! Now take a look at the ' . anchor ( 'account/overview', 'homepage' );
-			else
-				$data ['message'] = 'Adminstrator You have logged in successfully! Now take a look at the ' . anchor ( 'management/overview', 'System Management' );
-			$this->load->view ( 'account/note', $data );
-		}
-	}
-	
-	// µÇÂ¼±íµ¥ÑéÖ¤Ê±×Ô¶¨ÒåµÄº¯Êı
-	/**
-	 * ÌáÊ¾ÓÃ»§ÃûÊÇ²»´æÔÚµÄµÇÂ¼
-	 *
-	 * @param string $username        	
-	 * @return bool
-	 */
-	function username_check($username) {
-		if ($this->Account_model->get_by_username ( $username )) {
-			return TRUE;
-		} else {
-			$this->form_validation->set_message ( 'username_check', 'ÓÃ»§Ãû²»´æÔÚ' );
-			return FALSE;
-		}
-	}
-	/**
-	 * ¼ì²éÓÃ»§µÄÃÜÂëÕıÈ·ĞÔ
-	 */
-	function password_check($password) {
-		$password = md5 ( $this->salt . $password );
-		if ($this->Account_model->password_check ( $this->_username, $password )) {
-			return TRUE;
-		} else {
-			$this->form_validation->set_message ( 'password_check', 'ÓÃ»§Ãû»òÃÜÂë²»ÕıÈ·' );
-			return FALSE;
-		}
-	}
-	
-	/**
-	 * ÓÃ»§×¢²á
-	 * ±íµ¥¹æÔòÔÚÅäÖÃÎÄ¼ş:/config/form_validation.php
-	 * 'account/register'=>array( //ÓÃ»§×¢²á±íµ¥µÄ¹æÔò
-	 * array(
-	 * 'field'=>'username',
-	 * 'label'=>'ÓÃ»§Ãû',
-	 * 'rules'=>'trim|required|xss_clean|callback_username_exists'
-	 * ),
-	 * array(
-	 * 'field'=>'password',
-	 * 'label'=>'ÃÜÂë',
-	 * 'rules'=>'trim|required|min_length[4]|max_length[12]
-	 * |matches[password_conf]|xss_clean'
-	 * ),
-	 * array(
-	 * 'field'=>'email',
-	 * 'label'=>'ÓÊÏäÕËºÅ',
-	 * 'rules'=>'trim|required|xss_clean|valid_email|callback_email_exists'
-	 * )
-	 * )
-	 * ´íÎóÌáÊ¾ĞÅÏ¢ÔÚÎÄ¼ş£º/system/language/english/form_validation_lang.php
-	 */
-	function register() {
-		// ÉèÖÃ´íÎó¶¨½ç·û
-		$this->form_validation->set_error_delimiters ( '<span class="error">', '</span>' );
-		
-		if ($this->form_validation->run () == FALSE) {
-			$this->load->view ( 'account/register' );
-		} else {
-			$username = $this->input->post ( 'username' );
-			$password = md5 ( $this->salt . $this->input->post ( 'password' ) );
-			$email = $this->input->post ( 'email' );
-			if ($this->Account_model->add_user ( $username, $password, $email )) {
-				$data ['message'] = "The user account has now been created! You can go " . anchor ( 'account/overview', 'here' ) . '.';
-			} else {
-				$data ['message'] = "There was a problem when adding your account. You can register " . anchor ( 'account/register', 'here' ) . ' again.';
-			}
-			$this->load->view ( 'account/note', $data );
-		}
-	}
-	/**
-	 * ======================================
-	 * ÓÃÓÚ×¢²á±íµ¥ÑéÖ¤µÄº¯Êı
-	 * 1¡¢username_exists()
-	 * 2¡¢email_exists()
-	 * ======================================
-	 */
-	/**
-	 * ÑéÖ¤ÓÃ»§ÃûÊÇ·ñ±»Õ¼ÓÃ¡£
-	 * ´æÔÚ·µ»Øfalse, ·ñÕß·µ»Øtrue.
-	 *
-	 * @param string $username        	
-	 * @return boolean
-	 */
-	function username_exists($username) {
-		if ($this->Account_model->get_by_username ( $username )) {
-			$this->form_validation->set_message ( 'username_exists', 'ÓÃ»§ÃûÒÑ±»Õ¼ÓÃ' );
-			return FALSE;
-		}
-		return TRUE;
-	}
-	function email_exists($email) {
-		if ($this->Account_model->email_exists ( $email )) {
-			$this->form_validation->set_message ( 'email_exists', 'ÓÊÏäÒÑ±»Õ¼ÓÃ' );
-			return FALSE;
-		}
-		return TRUE;
-	}
-	
-	/**
-	 * ÓÃ»§ÍË³ö
-	 * ÒÑ¾­µÇÂ¼ÔòÍË³ö£¬·ñÔò×ªµ½details
-	 */
-	function logout() {
-		$data ['message'] = $this->session->userdata ( 'username' ) . ' You have logged out successfully! ';
-		if ($this->Account_model->logout () == TRUE) {
-			$this->load->view ( 'account/note', $data );
-		} else {
-		}
-	}
+
+class Account extends CI_Controller
+{
+    private $salt;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model(array('Account_model', 'Friend_model'));
+        $this->load->helper(array(
+            'form',
+            'url',
+            'date'
+        ));
+        $this->load->library(array(
+            'form_validation',
+            'session'
+        ));
+    }
+
+    function overview()
+    {
+        $this->load->view('templates/header');
+        $this->load->view('account/index');
+        $this->load->view('templates/footer');
+    }
+
+    /**
+     * ç”¨æˆ·æ³¨å†Œ
+     * è¡¨å•è§„åˆ™åœ¨é…ç½®æ–‡ä»¶:/config/form_validation.php
+     * 'account/register'=>array( //ç”¨æˆ·æ³¨å†Œè¡¨å•çš„è§„åˆ™
+     * array(
+     * 'field'=>'username',
+     * 'label'=>'ç”¨æˆ·å',
+     * 'rules'=>'trim|required|xss_clean|callback_username_exists'
+     * ),
+     * array(
+     * 'field'=>'password',
+     * 'label'=>'å¯†ç ',
+     * 'rules'=>'trim|required|min_length[4]|max_length[12]
+     * |matches[password_conf]|xss_clean'
+     * ),
+     * array(
+     * 'field'=>'email',
+     * 'label'=>'é‚®ç®±è´¦å·',
+     * 'rules'=>'trim|required|xss_clean|valid_email|callback_email_exists'
+     * )
+     * )
+     * é”™è¯¯æç¤ºä¿¡æ¯åœ¨æ–‡ä»¶ï¼š/system/language/english/form_validation_lang.php
+     */
+    function register()
+    {
+        // è®¾ç½®é”™è¯¯å®šç•Œç¬¦
+        $this->form_validation->set_error_delimiters('<span class="error">', '</span>');
+
+        if ($this->form_validation->run('register') == FALSE) {
+            $this->load->view('templates/header');
+            $this->load->view('account/register');
+            $this->load->view('templates/footer');
+        } else {
+            $username = $this->input->post('username');
+            $password = $this->input->post('password');
+            $email = $this->input->post('email');
+            if ($this->Account_model->add_user($username, $password, $email)) {
+                $data ['userMsg'] = $this->Account_model->get_by_username($username);
+                $this->Account_model->login($this->_username);
+                $this->load->view('templates/header');
+                $this->load->view('account/settings', $data);
+                $this->load->view('templates/footer');
+            } else {
+                $this->load->view('templates/header');
+                $this->load->view('account/register');
+                $this->load->view('templates/footer');
+            }
+        }
+    }
+    /**
+     * ======================================
+     * ç”¨äºæ³¨å†Œè¡¨å•éªŒè¯çš„å‡½æ•°
+     * 1ã€username_exists()
+     * 2ã€email_exists()
+     * ======================================
+     */
+    /**
+     * éªŒè¯ç”¨æˆ·åæ˜¯å¦è¢«å ç”¨ã€‚
+     * å­˜åœ¨è¿”å›false, å¦è€…è¿”å›true.
+     */
+    function username_exists($username)
+    {
+        if ($this->Account_model->get_by_username($username)) {
+            $this->form_validation->set_message('username_exists', 'ç”¨æˆ·åå·²è¢«å ç”¨');
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    /**
+     * éªŒè¯é‚®ç®±æ˜¯å¦è¢«å ç”¨ã€‚
+     * å­˜åœ¨è¿”å›false, å¦è€…è¿”å›true.
+     */
+    function email_exists($email)
+    {
+        if ($this->Account_model->email_exists($email)) {
+            $this->form_validation->set_message('email_exists', 'é‚®ç®±å·²è¢«å ç”¨');
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    /**
+     * æ¥æ”¶ã€éªŒè¯ç™»å½•è¡¨å•
+     * è¡¨å•è§„åˆ™åœ¨é…ç½®æ–‡ä»¶:/config/form_validation.php
+     * 'account/login'=>array( //ç™»å½•è¡¨å•çš„è§„åˆ™
+     * array(
+     * 'field'=>'username',
+     * 'label'=>'ç”¨æˆ·å',
+     * 'rules'=>'trim|required|xss_clean|callback_username_check'
+     * ),
+     * array(
+     * 'field'=>'password',
+     * 'label'=>'å¯†ç ',
+     * 'rules'=>'trim|required|xss_clean|callback_password_check'
+     * )
+     * )
+     * é”™è¯¯æç¤ºä¿¡æ¯åœ¨æ–‡ä»¶ï¼š/system/language/english/form_validation_lang.php
+     */
+    function login()
+    {
+        // è®¾ç½®é”™è¯¯å®šç•Œç¬¦
+        $this->form_validation->set_error_delimiters('<span class="error">', '</span>');
+        if (empty($this->session->userdata('username'))) {
+            $this->_username = $this->input->post('username');
+            if ($this->form_validation->run('login') == FALSE) {
+                $this->load->view('templates/header');
+                $this->load->view('account/login');
+                $this->load->view('templates/footer');
+            } else {
+                // æ³¨å†Œsession,è®¾å®šç™»å½•çŠ¶æ€
+                $this->Account_model->login($this->_username);
+                $row = $this->Account_model->get_by_username($this->_username);
+                $identity = $row->identity;
+                if ($identity == "admin") {
+                    redirect('admin/overview', 'auto');
+                } else {
+                    redirect('account/settings', 'auto');
+                }
+            }
+        } else {
+            $this->Account_model->login($this->session->userdata('username'));
+            $row = $this->Account_model->get_by_username($this->session->userdata('username'));
+            $identity = $row->identity;
+            if ($identity == "admin") {
+                redirect('admin/overview', 'auto');
+            } else {
+                redirect('account/settings', 'auto');
+            }
+        }
+    }
+    /**
+     * ======================================
+     * ç”¨äºç™»å½•è¡¨å•éªŒè¯çš„å‡½æ•°
+     * 1ã€username_check()
+     * 2ã€password_check()
+     * ======================================
+     */
+
+    /**
+     * æç¤ºç”¨æˆ·åæ˜¯å¦å­˜åœ¨çš„ç™»å½•
+     */
+    function username_check($username)
+    {
+        if ($this->Account_model->get_by_username($username)) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('username_check', 'ç”¨æˆ·åä¸å­˜åœ¨');
+            return FALSE;
+        }
+    }
+
+    /**
+     * æ£€æŸ¥ç”¨æˆ·çš„å¯†ç æ­£ç¡®æ€§
+     */
+    function password_check($password)
+    {
+        if ($this->Account_model->password_check($this->_username, $password)) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('password_check', 'å¯†ç ä¸æ­£ç¡®');
+            return FALSE;
+        }
+    }
+
+    /**
+     * ç”¨æˆ·é€€å‡º
+     * å·²ç»ç™»å½•åˆ™é€€å‡ºï¼Œå¦åˆ™è½¬åˆ°details
+     */
+    function logout()
+    {
+        if ($this->Account_model->logout() == TRUE) {
+            redirect('account/login', 'auto');
+        } else {
+            redirect('account/settings', 'auto');
+        }
+    }
+
+    /**
+     * ç”¨æˆ·è®¾ç½®
+     */
+    function settings()
+    {
+        $this->form_validation->set_error_delimiters('<span class="error">', '</span>');
+        $username = $this->session->userdata('username'); // ç”¨æˆ·å
+
+        if ($this->form_validation->run('settings') == FALSE) {
+            $data ['userMsg'] = $this->Account_model->get_by_username($username);
+            $data ['friends'] = $this->Friend_model->get_friends($data ['userMsg']->userid);
+            $groups = array();
+            foreach ($data['friends'] as $row) {
+                $groups[$row->group] = 0;
+            }
+            foreach ($data['friends'] as $row) {
+                $groups[$row->group] += 1;
+            }
+            $data ['groups'] = $groups;
+            $this->load->view('templates/header');
+            $this->load->view('account/settings', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $password = $this->input->post('password');
+            $email = $this->input->post('email');
+            $tel = $this->input->post('tel');
+            $age = $this->input->post('age');
+            $sex = $this->input->post('sex');
+            if ($this->Account_model->update_user($username, $password, $email, $tel, $age, $sex)) {
+                $data ['message'] = "The information has now been set! You can go " . anchor('account/overview', 'homepage') . '.';
+            } else {
+                $data ['message'] = "There was a problem when set your information. You can set " . anchor('account/settings', 'here') . ' again.';
+            }
+            $this->load->view('account/note', $data);
+        }
+    }
 }

@@ -1,81 +1,91 @@
 <?php
-$config = array (
-		'Account/login' => array ( // µÇÂ¼±íµ¥µÄ¹æÔò
-				array (
-						'field' => 'username',
-						'label' => 'ÓÃ»§Ãû',
-						'rules' => 'trim|required|callback_username_check' 
-				),
-				array (
-						'field' => 'password',
-						'label' => 'ÃÜÂë',
-						'rules' => 'trim|required|callback_password_check' 
-				) 
-		),
-		'Account/register' => array ( // ÓÃ»§×¢²á±íµ¥µÄ¹æÔò
-				array (
-						'field' => 'username',
-						'label' => 'ÓÃ»§Ãû',
-						'rules' => 'trim|required|callback_username_exists' 
-				),
-				array (
-						'field' => 'password',
-						'label' => 'ÃÜÂë',
-						'rules' => 'trim|required|min_length[4]|max_length[12]' 
-				),
-				array (
-						'field' => 'email',
-						'label' => 'ÓÊÏäÕËºÅ',
-						'rules' => 'trim|required|valid_email|callback_email_exists' 
-				) 
-		),
-		'Account/settings' => array ( // ÓÃ»§ÉèÖÃ¹æÔò
-				array (
-						'field' => 'password',
-						'label' => 'ÃÜÂë',
-						'rules' => 'trim|required|min_length[4]|max_length[12]'
-				),
-				array (
-						'field' => 'email',
-						'label' => 'µç×ÓÓÊÏä',
-						'rules' => 'trim|required|valid_email'
-				),
-				array (
-						'field' => 'telnum',
-						'label' => 'ÊÖ»úºÅÂë',
-						'rules' => 'trim|required'
-				),
-				array (
-						'field' => 'age',
-						'label' => 'ÄêÁä',
-						'rules' => 'trim|required'
-				),
-				array (
-						'field' => 'height',
-						'label' => 'Éí¸ß',
-						'rules' => 'trim|required'
-				),
-				array (
-						'field' => 'weight',
-						'label' => 'ÌåÖØ',
-						'rules' => 'trim|required'
-				),
-		), 
-		'Health/plan' => array ( // ÓÃ»§×¢²á±íµ¥µÄ¹æÔò
-				array (
-						'field' => 'content',
-						'label' => 'ÄÚÈİ',
-						'rules' => 'trim|required'
-				),
-				array (
-						'field' => 'starttime',
-						'label' => '¿ªÊ¼Ê±¼ä',
-						'rules' => 'trim|required'
-				),
-				array (
-						'field' => 'endtime',
-						'label' => '½áÊøÊ±¼ä',
-						'rules' => 'trim|required'
-				)
-		),
+$config = array(
+    'register' => array( // ç”¨æˆ·æ³¨å†Œè¡¨å•çš„è§„åˆ™
+        array(
+            'field' => 'username',
+            'label' => 'ç”¨æˆ·å',
+            'rules' => 'trim|required|callback_username_exists'
+        ),
+        array(
+            'field' => 'password',
+            'label' => 'å¯†ç ',
+            'rules' => 'trim|required|min_length[4]|max_length[12]'
+        ),
+        array(
+            'field' => 'email',
+            'label' => 'ç”µå­é‚®ç®±',
+            'rules' => 'trim|required|valid_email|callback_email_exists'
+        )
+    ),
+    'login' => array( // ç™»å½•è¡¨å•çš„è§„åˆ™
+        array(
+            'field' => 'username',
+            'label' => 'ç”¨æˆ·å',
+            'rules' => 'trim|required|callback_username_check'
+        ),
+        array(
+            'field' => 'password',
+            'label' => 'å¯†ç ',
+            'rules' => 'trim|required|callback_password_check'
+        )
+    ),
+    'settings' => array( // ç”¨æˆ·è®¾ç½®è§„åˆ™
+        array(
+            'field' => 'username',
+            'label' => 'ç”¨æˆ·å',
+            'rules' => 'trim|required|callback_username_check'
+        ),
+        array(
+            'field' => 'password',
+            'label' => 'å¯†ç ',
+            'rules' => 'trim|required|min_length[4]|max_length[12]'
+        ),
+        array(
+            'field' => 'email',
+            'label' => 'ç”µå­é‚®ç®±',
+            'rules' => 'trim|required|valid_email'
+        ),
+        array(
+            'field' => 'tel',
+            'label' => 'ç”µè¯å·ç ',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'age',
+            'label' => 'å¹´é¾„',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'sex',
+            'label' => 'æ€§åˆ«',
+            'rules' => 'trim'
+        ),
+    ),
+    'event' => array( // æ´»åŠ¨è®¾ç½®è§„åˆ™
+        array(
+            'field' => 'eventid',
+            'label' => 'æ´»åŠ¨ç¼–å·',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'title',
+            'label' => 'æ ‡é¢˜',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'content',
+            'label' => 'å†…å®¹',
+            'rules' => 'required'
+        ),
+        array(
+            'field' => 'starttime',
+            'label' => 'å¼€å§‹æ—¶é—´',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'endtime',
+            'label' => 'ç»“æŸæ—¶é—´',
+            'rules' => 'trim'
+        ),
+    ),
 );
