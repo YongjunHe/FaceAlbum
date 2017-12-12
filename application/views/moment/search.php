@@ -21,17 +21,17 @@
     <!-- filter-->
     <div class="isotop-container">
         <div class="work-filter">
-        <?php
-        if (!empty($albums)) {
-            foreach ($albums as $row) {
-                if($row->name != $album_name){
-                    echo "<a href='". site_url('/Album/overview/' . $row->name) ."'>$row->name</a>";
-                }else{
-                    echo "<a href='". site_url('/Album/overview/' . $row->name) ."' class=\"active\">$row->name</a>";
+            <?php
+            if (!empty($albums)) {
+                foreach ($albums as $row) {
+                    if($row->name != $album_name){
+                        echo "<a href='". site_url('/Album/overview/' . $row->name) ."'>$row->name</a>";
+                    }else{
+                        echo "<a href='". site_url('/Album/overview/' . $row->name) ."' class=\"active\">$row->name</a>";
+                    }
                 }
             }
-        }
-        ?>
+            ?>
         </div>
         <div id="filter-grid" class="row cws-multi-col portfolio-grid">
             <?php

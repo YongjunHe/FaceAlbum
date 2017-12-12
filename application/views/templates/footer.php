@@ -122,7 +122,9 @@
 <script type="text/javascript" src="static/js/jquery.tweet.js"></script>
 <script type="text/javascript" src="static/js/script.js"></script>
 <script type="text/javascript" src="static/js/admin.js"></script>
+<script type="text/javascript" src="static/js/album.js"></script>
 <script type="text/javascript" src="static/js/user.js"></script>
+<script type="text/javascript" src="static/js/moment.js"></script>
 <script type="text/javascript" src="static/js/event.js"></script>
 </body>
 </html>

@@ -102,8 +102,8 @@
             <div class="inner-nav desktop-nav">
                 <ul class="clearlist">
                     <li><a href="<?php echo site_url('/Account/overview'); ?>">Home</a></li>
-                    <li><a href="single.html">Albums</a></li>
-                    <li><a href="grid.html">Moments</a></li>
+                    <li><a href="<?php echo site_url('/Album/overview'); ?>">Albums</a></li>
+                    <li><a href="<?php echo site_url('/Moment/overview'); ?>">Moments</a></li>
                     <li><a href="<?php echo site_url('/Event/overview'); ?>">Events</a></li>
                     <li><a href="<?php echo site_url('/Account/login'); ?>">Accounts</a></li>
                 </ul>

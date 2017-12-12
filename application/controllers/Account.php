@@ -2,8 +2,6 @@
 
 class Account extends CI_Controller
 {
-    private $salt;
-
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +20,7 @@ class Account extends CI_Controller
     function overview()
     {
         $this->load->view('templates/header');
-        $this->load->view('account/index');
+        $this->load->view('account/login');
         $this->load->view('templates/footer');
     }
 
@@ -63,6 +61,10 @@ class Account extends CI_Controller
             $password = $this->input->post('password');
             $email = $this->input->post('email');
             if ($this->Account_model->add_user($username, $password, $email)) {
+                $dir = APPPATH . "../static/pic/album/" . $username;
+                if (!file_exists($dir)) {
+                    mkdir($dir);
+                }
                 $data ['userMsg'] = $this->Account_model->get_by_username($username);
                 $this->Account_model->login($this->_username);
                 $this->load->view('templates/header');
