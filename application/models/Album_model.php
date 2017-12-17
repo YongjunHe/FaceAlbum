@@ -45,7 +45,10 @@ class Album_model extends CI_Model
 
     function add_album($userid, $name)
     {
+        $this->db->select('max(albumid) as albumid');
+        $albumid = $this->db->get('album')->row()->albumid+1;
         $data = array(
+            'albumid' => $albumid,
             'userid' => $userid,
             'name' => $name
         );
@@ -132,7 +135,10 @@ class Album_model extends CI_Model
 
     function add_photo($albumid, $photo_name)
     {
+        $this->db->select('max(photoid) as photoid');
+        $photoid = $this->db->get('photo')->row()->photoid+1;
         $data = array(
+            'photoid' => $photoid,
             'albumid' => $albumid,
             'name' => $photo_name
         );
