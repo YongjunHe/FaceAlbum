@@ -11,7 +11,7 @@
 <div class="container">
     <div class="row">
         <!-- content-->
-        <div class="col-md-3">
+        <div class="col-md-4">
             <form id="news_upload" method="post" action="<?php echo site_url('Moment/upload') ?>"
                   enctype="multipart/form-data">
                 <div class="billing-wrapper">
@@ -40,37 +40,61 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-9">
-            <table class="table table-hover table-bordered" id="news">
-                <thead>
-                <tr>
-                    <th>newsid</th>
-                    <th>authorid</th>
-                    <th>ownerid</th>
-                    <th>content</th>
-                    <th>photo_count</th>
-                    <th>updatetime</th>
-                    <th>albumid</th>
-                    <th>action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach($news as $row){
-                    echo "<tr>";
-                    echo "<td>".$row->newsid."</td>";
-                    echo "<td>".$row->authorid."</td>";
-                    echo "<td>".$row->ownerid."</td>";
-                    echo "<td>".$row->content."</td>";
-                    echo "<td>".$row->photo_count."</td>";
-                    echo "<td>".$row->updatetime."</td>";
-                    echo "<td>".$row->albumid."</td>";
-                    echo "<td><button><a href='" . site_url('/Moment/share/' . $row->newsid ) . "'><i class=\"fa fa-share\"></i></a></button><button><i class=\"fa fa-comment\"></i></button><button><a href='" . site_url('/Moment/search/' . $row->authorid ) . "'><i class=\"fa fa-search\"></i></a></button></td>";
-                    echo "</tr>";
-                }
-                ?>
-                </tbody>
-            </table>
+        <div class="col-md-4">
+            <div class="cws-widget">
+                <div class="widget-top-sellers" id="news">
+                    <h3 class="mt-0 mb-30">Friends' news</h3>
+                    <!-- item recent post-->
+                    <?php
+                    if (!empty($friend_news)) {
+                        foreach ($friend_news as $row) {
+                            echo "<div class=\"item-top-sellers clearfix\"><img src=$row->address alt>";
+                            echo "<h3 class=\"title\"><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>$row->username</a></h3>";
+                            echo "<div class=\"old-price\">content:<span class=\"price\">$row->content</span></div>";
+                            echo "<div class=\"old-price\">photos:<span class=\"price\">$row->photo_count</span></div>";
+                            echo "<div class=\"star\">";
+                            for ($i=0; $i<$row->star; $i++) {
+                                echo "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>";
+                            }
+                            echo "</div>";
+                            echo "<div class=\"price\">$row->updatetime</div>";
+                            echo "<div><button><a href='" . site_url('/Moment/share/' . $row->newsid ) . "'><i class=\"fa fa-share\"></i></a></button><button><i class=\"fa fa-comment\"></i></button>";
+                            echo "<button><a><i class=\"fa fa-star\" id=$row->newsid></i></a></button><button><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'><i class=\"fa fa-search\"></i></a></button></div>";
+                            echo "</div>";
+                        }
+                    }
+                    ?>
+                    <!-- ! item recent post-->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cws-widget">
+                <div class="widget-top-sellers" id="news">
+                    <h3 class="mt-0 mb-30">Popular news</h3>
+                    <!-- item recent post-->
+                    <?php
+                    if (!empty($all_news)) {
+                        foreach ($all_news as $row) {
+                            echo "<div class=\"item-top-sellers clearfix\"><img src=$row->address alt>";
+                            echo "<h3 class=\"title\"><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>$row->username</a></h3>";
+                            echo "<div class=\"old-price\">content:<span class=\"price\">$row->content</span></div>";
+                            echo "<div class=\"old-price\">photos:<span class=\"price\">$row->photo_count</span></div>";
+                            echo "<div class=\"star\">";
+                            for ($i=0; $i<$row->star; $i++) {
+                                echo "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>";
+                            }
+                            echo "</div>";
+                            echo "<div class=\"price\">$row->updatetime</div>";
+                            echo "<div><button><a href='" . site_url('/Moment/share/' . $row->newsid ) . "'><i class=\"fa fa-share\"></i></a></button><button><i class=\"fa fa-comment\"></i></button>";
+                            echo "<button><a><i class=\"fa fa-star\" id=$row->newsid></i></a></button><button><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'><i class=\"fa fa-search\"></i></a></button></div>";
+                            echo "</div>";
+                        }
+                    }
+                    ?>
+                    <!-- ! item recent post-->
+                </div>
+            </div>
         </div>
         <!-- ! content-->
     </div>

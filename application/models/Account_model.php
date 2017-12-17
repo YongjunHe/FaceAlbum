@@ -8,9 +8,10 @@ class Account_model extends CI_Model
         $this->salt = "HOBBY";
     }
 
-    function login($username)
+    function login($userid, $username)
     {
         $data = array(
+            'userid' => $userid,
             'username' => $username,
             'logged_in' => TRUE
         );
@@ -48,14 +49,6 @@ class Account_model extends CI_Model
         }
     }
 
-    function password_check($username, $password)
-    {
-        if ($user = $this->get_by_username($username)) {
-            return $user->password == md5($this->salt . $password) ? TRUE : FALSE;
-        }
-        return FALSE;
-    }
-
     function add_user($username, $password, $email)
     {
         $data = array(
@@ -86,6 +79,14 @@ class Account_model extends CI_Model
         $this->db->update('user', $data);
         if ($this->db->affected_rows() > 0)
             return TRUE;
+        return FALSE;
+    }
+
+    function password_check($username, $password)
+    {
+        if ($user = $this->get_by_username($username)) {
+            return $user->password == md5($this->salt . $password) ? TRUE : FALSE;
+        }
         return FALSE;
     }
 

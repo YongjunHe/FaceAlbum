@@ -17,8 +17,7 @@ class Friend extends CI_Controller
 
     public function add_friend()
     {
-        $username = $this->session->userdata('username');
-        $userid = $this->Account_model->get_by_username($username)->userid;
+        $userid = $this->session->userdata('userid');
         $friendid = $this->input->post('friendid');
         $group = $this->input->post('group');
         if ($this->Friend_model->add_friend($userid, $friendid, $group))
@@ -31,8 +30,7 @@ class Friend extends CI_Controller
 
     public function delete_friend()
     {
-        $username = $this->session->userdata('username');
-        $userid = $this->Account_model->get_by_username($username)->userid;
+        $userid = $this->session->userdata('userid');
         $friendname = $this->input->post('friend_name');
         $friendid = $this->Account_model->get_by_username($friendname)->userid;
         if ($this->Friend_model->delete_friend($userid, $friendid))
@@ -56,8 +54,7 @@ class Friend extends CI_Controller
 
     public function update_friend()
     {
-        $username = $this->session->userdata('username');
-        $userid = $this->Account_model->get_by_username($username)->userid;
+        $userid = $this->session->userdata('userid');
         $friendname = $this->input->post('friend_name');
         $friendid = $this->Account_model->get_by_username($friendname)->userid;
         $group = $this->input->post('group');
@@ -69,22 +66,12 @@ class Friend extends CI_Controller
         echo json_encode($data);
     }
 
-    public function friend_updates()
+    public function get_notifications()
     {
-        $username = $this->session->userdata('username');
-        $userid = $this->Account_model->get_by_username($username)->userid;
-
-        $data ['updates'] = $this->friend_model->get_friend_updates($userid);
-        $this->load->view('friends/friend_updates', $data);
-    }
-
-    function friendid_check($friendid)
-    {
-        if ($this->account_model->get_by_userid($friendid)) {
-            return TRUE;
-        } else {
-            $this->form_validation->set_message('friendid_check', 'ÓÃ»§²»´æÔÚ');
-            return FALSE;
-        }
+        $userid = $this->session->userdata('userid');
+        $notifications =  $this->Friend_model->get_friend_updates($userid);
+        $data = array('notifications' => $notifications);
+        $this->output->set_header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
     }
 }

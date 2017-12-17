@@ -65,7 +65,6 @@
     <div class="container">
         <div class="mt-10" align="right">
             <button id="add_event" class="cws-button gray alt">Add</button>
-            <a href="<?php echo site_url('/Account/logout'); ?>" class="cws-button gray alt">Logout</a>
         </div>
         <div class="row" style="overflow:scroll; height: 400px">
             <table class="table table-hover table-bordered" id="events">

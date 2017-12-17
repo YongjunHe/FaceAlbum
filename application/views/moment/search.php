@@ -1,63 +1,101 @@
-<!-- section portfolio filter-->
-<section class="page-section pb-0 bg-gray-2">
+<!-- breadcrumbs start-->
+<section style="background-image:url('static/pic/breadcrumbs/bg-1.jpg');" class="breadcrumbs">
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <!-- title section-->
-                <h2 class="title-section text-center mt-0 mb-0">my gallery</h2>
-                <!-- ! title section-->
+        <div class="text-center breadcrumbs-item">
+            <h1>News</h1><a href="#">home</a><i class="fa fa-angle-right"></i><a href="#">Moments</a><i
+                class="fa fa-angle-right"></i><a href="#">News</a>
+        </div>
+    </div>
+</section>
+<!-- ! breadcrumbs end-->
+<div class="container">
+    <div class="row">
+        <!-- content-->
+        <div class="col-md-4">
+            <form id="news_upload" method="post" action="<?php echo site_url('Moment/upload') ?>"
+                  enctype="multipart/form-data">
+                <div class="billing-wrapper">
+                    <div>
+                        <p class="form-row form-row-wide address-field validate-required">
+                            <label for="album_name">Album name<abbr title="required"
+                                                                    class="required">*</abbr></label>
+                            <input id="album_name" type="text" name="album_name"
+                                   placeholder="Enter the album name" value="">
+                        </p>
+                        <p class="form-row form-row-wide address-field validate-required">
+                            <label for="news_content">News Content<abbr title="required"
+                                                                        class="required">*</abbr></label>
+                            <input id="news_content" type="text" name="news_content"
+                                   placeholder="Enter your news content" value="">
+                        </p>
+                        <p id="photo_upload" class="form-row form-row-wide address-field validate-required">
+                            <input type="file" name="userfile0" class="files"/>
+                        </p>
+                        <br/>
+                    </div>
+                    <div class="place-order">
+                        <input id="upload" type="submit" name="upload"
+                               value="Upload" class="cws-button full-width alt">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="cws-widget">
+                <div class="widget-top-sellers" id="news">
+                    <h3 class="mt-0 mb-30">Popular photos</h3>
+                    <!-- item recent post-->
+                    <?php
+                    if (!empty($photo_news)) {
+                        foreach ($photo_news as $row) {
+                            echo "<div class=\"item-top-sellers clearfix\"><img src=$row->address alt>";
+                            echo "<h3 class=\"title\"><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>$row->username</a></h3>";
+                            echo "<div class=\"old-price\">content:<span class=\"price\">$row->content</span></div>";
+                            echo "<div class=\"old-price\">photos:<span class=\"price\">$row->photo_count</span></div>";
+                            echo "<div class=\"star\">";
+                            for ($i=0; $i<$row->star; $i++) {
+                                echo "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>";
+                            }
+                            echo "</div>";
+                            echo "<div class=\"price\">$row->updatetime</div>";
+                            echo "<div><button><a href='" . site_url('/Moment/share/' . $row->newsid ) . "'><i class=\"fa fa-share\"></i></a></button><button><i class=\"fa fa-comment\"></i></button>";
+                            echo "<button><a><i class=\"fa fa-star\" id=$row->newsid></i></a></button><button><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'><i class=\"fa fa-search\"></i></a></button></div>";
+                            echo "</div>";
+                        }
+                    }
+                    ?>
+                    <!-- ! item recent post-->
+                </div>
             </div>
         </div>
-        <div class="widget-tags" id="album_tag">
-            <?php
-            if (!empty($tags)) {
-                foreach ($tags as $row) {
-                    echo "<a class=\"tag\">$row->tag</a>";
-                }
-            }
-            ?>
-        </div>
-    </div>
-    <!-- filter-->
-    <div class="isotop-container">
-        <div class="work-filter">
-            <?php
-            if (!empty($albums)) {
-                foreach ($albums as $row) {
-                    if($row->name != $album_name){
-                        echo "<a href='". site_url('/Album/overview/' . $row->name) ."'>$row->name</a>";
-                    }else{
-                        echo "<a href='". site_url('/Album/overview/' . $row->name) ."' class=\"active\">$row->name</a>";
+        <div class="col-md-4">
+            <div class="cws-widget">
+                <div class="widget-top-sellers" id="news">
+                    <h3 class="mt-0 mb-30">Popular albums</h3>
+                    <!-- item recent post-->
+                    <?php
+                    if (!empty($album_news)) {
+                        foreach ($album_news as $row) {
+                            echo "<div class=\"item-top-sellers clearfix\"><img src=$row->address alt>";
+                            echo "<h3 class=\"title\"><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>$row->username</a></h3>";
+                            echo "<div class=\"old-price\">content:<span class=\"price\">$row->content</span></div>";
+                            echo "<div class=\"old-price\">photos:<span class=\"price\">$row->photo_count</span></div>";
+                            echo "<div class=\"star\">";
+                            for ($i=0; $i<$row->star; $i++) {
+                                echo "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>";
+                            }
+                            echo "</div>";
+                            echo "<div class=\"price\">$row->updatetime</div>";
+                            echo "<div><button><a href='" . site_url('/Moment/share/' . $row->newsid ) . "'><i class=\"fa fa-share\"></i></a></button><button><i class=\"fa fa-comment\"></i></button>";
+                            echo "<button><a><i class=\"fa fa-star\" id=$row->newsid></i></a></button><button><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'><i class=\"fa fa-search\"></i></a></button></div>";
+                            echo "</div>";
+                        }
                     }
-                }
-            }
-            ?>
+                    ?>
+                    <!-- ! item recent post-->
+                </div>
+            </div>
         </div>
-        <div id="filter-grid" class="row cws-multi-col portfolio-grid">
-            <?php
-            if (!empty($photos)) {
-                foreach ($photos as $row) {
-                    echo "<div class=\"col-lg-3 col-md-4 col-sm-6 all branding design other\"><div class=\"portfolio-item text-center\"><div class=\"pic\">";
-                    echo "<img src='static/pic/album/" . $this->session->userdata('username') . "/" . $album_name . "/" . "$row->name' alt>";
-                    echo "<div class=\"item-content\"><div class=\"links\">";
-                    echo "<span class=\"portfolio-title\">$row->name</span>";
-                    echo "<a href='static/pic/album/" . $this->session->userdata('username') . "/" . $album_name . "/" . "$row->name' class=\"link-icon fancy\"><i class=\"fa fa-search\"></i></a>";
-                    echo "<a class=\"link-icon\"><i class=\"fa fa-plus\"></i></a>";
-                    echo "<a class=\"link-icon\" href='" . site_url('/Album/download/' . $album_name . '/' . $row->name) . "'><i class=\"fa fa-download\"></i></a>";
-                    echo "<a class=\"link-icon\"><i class=\"fa fa-remove\"></i></a>";
-                    echo "</div></div></div></div></div>";
-                }
-            }
-            ?>
-        </div>
+        <!-- ! content-->
     </div>
-    <div class="pb-40 mt-10" align="center">
-        <input type="text" id="multi_input">
-        <a class="cws-button alt" id="add_album">Add album</a>
-        <a href="<?php echo site_url('/Album/delete_album/'. $album_name); ?>" class="cws-button alt" id="delete_album">Delete album</a>
-        <a class="cws-button alt" id="share_album">Share album</a>
-        <a class="cws-button alt" id="tag_album">Add tags</a>
-    </div>
-    <!-- ! filter-->
-</section>
-<!-- ! section portfolio filter-->
+</div>

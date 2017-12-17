@@ -20,8 +20,7 @@ class Event extends CI_Controller
     {
         $data ['events'] = $this->Admin_model->get_events();
         if (!empty($this->session->userdata('username'))) {
-            $username = $this->session->userdata('username');
-            $userid = $this->Account_model->get_by_username($username)->userid;
+            $userid = $userid = $this->session->userdata('userid');
             $data ['my_events'] = $this->Event_model->get_by_memberid($userid);
         }
         $this->load->view('templates/header');
@@ -34,8 +33,7 @@ class Event extends CI_Controller
         $data = array("result" => False);
         if (!empty($this->session->userdata('username'))) {
             $eventid = $this->input->post('eventid');
-            $username = $this->session->userdata('username');
-            $userid = $this->Account_model->get_by_username($username)->userid;
+            $userid = $this->session->userdata('userid');
             if ($this->Event_model->add_member($eventid, $userid))
                 $data = array("result" => True);
         }
@@ -48,8 +46,7 @@ class Event extends CI_Controller
         $data = array("result" => False);
         if (!empty($this->session->userdata('username'))) {
             $eventid = $this->input->post('eventid');
-            $username = $this->session->userdata('username');
-            $userid = $this->Account_model->get_by_username($username)->userid;
+            $userid = $this->session->userdata('userid');
             if ($this->Event_model->delete_member($eventid, $userid))
                 $data = array("result" => True);
         }

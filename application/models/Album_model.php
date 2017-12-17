@@ -14,6 +14,35 @@ class Album_model extends CI_Model
         return $query->result();
     }
 
+    function get_album($userid, $name)
+    {
+        $data = array(
+            'userid' => $userid,
+            'name' => $name
+        );
+        $this->db->where($data);
+        $query = $this->db->get('album');
+        if ($query->num_rows() == 1) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
+    function get_album_name($albumid)
+    {
+        $data = array(
+            'albumid' => $albumid,
+        );
+        $this->db->where($data);
+        $query = $this->db->get('album');
+        if ($query->num_rows() == 1) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
     function add_album($userid, $name)
     {
         $data = array(
@@ -29,9 +58,15 @@ class Album_model extends CI_Model
 
     function delete_album($userid, $name)
     {
+        $albumid = $this->get_album($userid, $name);
         $data = array(
-            'userid' => $userid,
-            'name' => $name
+            'albumid' => $albumid,
+        );
+        $this->db->delete('photo', $data);
+
+        $data = array(
+        'userid' => $userid,
+        'name' => $name
         );
         $this->db->delete('album', $data);
         if ($this->db->affected_rows() > 0) {
@@ -40,20 +75,33 @@ class Album_model extends CI_Model
         return FALSE;
     }
 
-    function get_tags($albumid)
+    function get_album_tags($albumid)
     {
         $this->db->where('albumid', $albumid);
-        $query = $this->db->get('tag');
+        $query = $this->db->get('tag_album');
         return $query->result();
     }
 
-    function tag_album($albumid, $tag)
+    function add_tag_album($albumid, $tag)
     {
         $data = array(
             'albumid' => $albumid,
             'tag' => $tag
         );
-        $this->db->insert('tag', $data);
+        $this->db->insert('tag_album', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    function delete_tag_album($albumid, $tag)
+    {
+        $data = array(
+            'albumid' => $albumid,
+            'tag' => $tag
+        );
+        $this->db->delete('tag_album', $data);
         if ($this->db->affected_rows() > 0) {
             return TRUE;
         }
@@ -65,6 +113,21 @@ class Album_model extends CI_Model
         $this->db->where('albumid', $albumid);
         $query = $this->db->get('photo');
         return $query->result();
+    }
+
+    function get_photo($albumid, $name)
+    {
+        $data = array(
+            'albumid' => $albumid,
+            'name' => $name
+        );
+        $this->db->where($data);
+        $query = $this->db->get('photo');
+        if ($query->num_rows() == 1) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
     }
 
     function add_photo($albumid, $photo_name)
@@ -82,6 +145,47 @@ class Album_model extends CI_Model
 
     function delete_photo($albumid, $name)
     {
+        $data = array(
+            'albumid' => $albumid,
+            'name' => $name
+        );
+        $this->db->delete('photo', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
 
+    function get_tag_photo($photoid)
+    {
+        $this->db->where('photoid', $photoid);
+        $query = $this->db->get('tag_photo');
+        return $query->result();
+    }
+
+    function add_tag_photo($photoid, $tag)
+    {
+        $data = array(
+            'photoid' => $photoid,
+            'tag' => $tag
+        );
+        $this->db->insert('tag_photo', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    function delete_tag_photo($photoid, $tag)
+    {
+        $data = array(
+            'photoid' => $photoid,
+            'tag' => $tag
+        );
+        $this->db->delete('tag_photo', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
     }
 }

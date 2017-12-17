@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <!-- title section-->
-                <h2 class="title-section text-center mt-0 mb-0">my gallery</h2>
+                <h2 class="title-section text-center mt-0 mb-0"><?php echo $username?> gallery</h2>
                 <!-- ! title section-->
             </div>
         </div>
@@ -38,10 +38,10 @@
             if (!empty($photos)) {
                 foreach ($photos as $row) {
                     echo "<div class=\"col-lg-3 col-md-4 col-sm-6 all branding design other\"><div class=\"portfolio-item text-center\"><div class=\"pic\">";
-                    echo "<img src='static/pic/album/" . $this->session->userdata('username') . "/" . $album_name . "/" . "$row->name' alt>";
+                    echo "<img src='static/pic/album/" . $username . "/" . $album_name . "/" . "$row->name' alt>";
                     echo "<div class=\"item-content\"><div class=\"links\">";
                     echo "<span class=\"portfolio-title\">$row->name</span>";
-                    echo "<a href='static/pic/album/" . $this->session->userdata('username') . "/" . $album_name . "/" . "$row->name' class=\"link-icon fancy\"><i class=\"fa fa-search\"></i></a>";
+                    echo "<a href='static/pic/album/" . $username . "/" . $album_name . "/" . "$row->name' class=\"link-icon fancy\"><i class=\"fa fa-search\"></i></a>";
                     echo "<a class=\"link-icon\"><i class=\"fa fa-plus\"></i></a>";
                     echo "<a class=\"link-icon\" href='" . site_url('/Album/download/' . $album_name . '/' . $row->name) . "'><i class=\"fa fa-download\"></i></a>";
                     echo "<a class=\"link-icon\"><i class=\"fa fa-remove\"></i></a>";

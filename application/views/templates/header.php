@@ -49,44 +49,25 @@
                 </div>
                 <div class="col-sm-6 text-right">
                     <div class="top-right-wrap">
-                        <div class="top-login"><i class="fa fa-user"></i><a href="<?php echo site_url('/Account/login'); ?>">
+                        <div><i class="fa fa-user"></i><a href="<?php echo site_url('/Account/login'); ?>">
                                 <?php if(empty($this->session->userdata('username'))){echo 'Login';} else { echo $this->session->userdata('username');} ?> </a></div>
                         <span>|</span>
                         <div class="top-shop"><i class="fa fa-envelope"></i>Notification
-                            <aside class="widget-top-sellers #cart-menu">
-                                <p>There Are <span>2 items</span> In Your Bag</p>
-                                <!-- item recent post-->
-                                <div class="item-top-sellers clearfix"><img src="static/pic/shop/70x80/1.jpg" alt>
-                                    <h3 class="title"><a href="single.html">Integer ante arcu serius</a> <a href="#" class="#close"><i class="fa fa-close"></i></a></h3>
-                                    <div class="price">$40.<span class="mini-price">99</span> <span class="old-price">$30.<span class="mini-price">99</span></span></div>
-                                    <div class="star-rating full"></div>
-                                    <div class="cws_divider mt-10 mb-10"> </div>
-                                </div>
-                                <!-- ! item recent post-->
-                                <!-- item recent post-->
-                                <div class="item-top-sellers clearfix"><img src="static/pic/shop/70x80/2.jpg" alt>
-                                    <h3 class="title"><a href="single.html">Aenean tellus metus</a> <a href="#" class="#close"><i class="fa fa-close"></i></a></h3>
-                                    <div class="price">$15.<span class="mini-price">99</span></div>
-                                    <div class="star-rating full"></div>
-                                    <div class="cws_divider mt-10 mb-10"></div>
-                                </div>
-                                <!-- ! item recent post-->
-                                <div class="total clearfix">
-                                    <div class="sub-total">Subtotal: <span>$57</span></div><a href="#" class="clear">Clear All Data <i class="fa fa-recycle"></i></a>
-                                </div>
-                                <div class="cart-buttons"><a href="cart.html" class="cws-button alt mini">View Cart</a><a href="checkout.html" class="cws-button mini">Checkout</a></div>
+                            <aside class="widget-top-sellers shop-cart-menu">
+                                <div class="cart-buttons"><a href="<?php echo site_url('/Account/settings'); ?>" class="cws-button alt mini">View Settings</a><a href="<?php echo site_url('/Account/logout'); ?>" class="cws-button mini">Logout</a></div>
                             </aside>
                         </div><span>|</span>
                         <div class="top-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</div>
                     </div>
                 </div>
                 <div class="search_menu_cont">
-                    <form role="search" method="get" class="form">
+                    <form role="search" method="post" class="form" action="<?php echo site_url('/Moment/search'); ?>">
                         <div class="search-wrap">
-                            <input type="text" placeholder="Search . . ." class="form-control search-field">
+                            <input type="text" name="tag" placeholder="Search . . ." class="form-control search-field">
                         </div>
+                        <input type="submit" id="submit_search" style="display: none;">
                     </form>
-                    <div class="search_back_button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    <div class="search_back_button"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     </div>
                 </div>
             </div>

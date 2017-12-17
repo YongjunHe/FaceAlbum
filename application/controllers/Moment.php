@@ -20,10 +20,50 @@ class Moment extends CI_Controller
     function overview()
     {
         if (!empty($this->session->userdata('username'))) {
-            $news =  $this->Moment_model->get_news();
-            $data = array("news" => $news);
+            $friend_news = $this->Moment_model->get_friends_news($this->session->userdata('userid'));
+            $all_news = $this->Moment_model->get_news();
+            foreach ($friend_news as $row) {
+                $album_name = $this->Album_model->get_album_name($row->albumid)->name;
+                $photo_name = $this->Album_model->get_photos($row->albumid)[0]->name;
+                $address = "static/pic/album/".$row->username."/".$album_name."/".$photo_name;
+                $row->address = $address;
+            }
+            foreach ($all_news as $row) {
+                $album_name = $this->Album_model->get_album_name($row->albumid)->name;
+                $photo_name = $this->Album_model->get_photos($row->albumid)[0]->name;
+                $address = "static/pic/album/".$row->username."/".$album_name."/".$photo_name;
+                $row->address = $address;
+            }
+            $data = array("friend_news" => $friend_news, "all_news" => $all_news);
             $this->load->view('templates/header');
             $this->load->view('moment/moment', $data);
+            $this->load->view('templates/footer');
+        } else {
+            redirect('account/login', 'auto');
+        }
+    }
+
+    function search()
+    {
+        if (!empty($this->session->userdata('username'))) {
+            $tag = $this->input->post('tag');
+            $photo_news = $this->Moment_model->get_by_phototag($tag);
+            $album_news = $this->Moment_model->get_by_albumtag($tag);
+            foreach ($photo_news as $row) {
+                $album_name = $this->Album_model->get_album_name($row->albumid)->name;
+                $photo_name = $this->Album_model->get_photos($row->albumid)[0]->name;
+                $address = "static/pic/album/".$row->username."/".$album_name."/".$photo_name;
+                $row->address = $address;
+            }
+            foreach ($album_news as $row) {
+                $album_name = $this->Album_model->get_album_name($row->albumid)->name;
+                $photo_name = $this->Album_model->get_photos($row->albumid)[0]->name;
+                $address = "static/pic/album/".$row->username."/".$album_name."/".$photo_name;
+                $row->address = $address;
+            }
+            $data = array("photo_news" => $photo_news, "album_news" => $album_news,  "tag" =>$tag);
+            $this->load->view('templates/header');
+            $this->load->view('moment/search', $data);
             $this->load->view('templates/footer');
         } else {
             redirect('account/login', 'auto');
@@ -33,7 +73,7 @@ class Moment extends CI_Controller
     function upload()
     {
         $username = $this->session->userdata('username');
-        $userid = $this->Account_model->get_by_username($username)->userid;
+        $userid = $this->session->userdata('userid');
         $album_name = $this->input->post('album_name');
         $news_content = $this->input->post('news_content');
         $dir = APPPATH . "../static/pic/album/" . $username . "/" . $album_name;
@@ -50,7 +90,7 @@ class Moment extends CI_Controller
 
         $config['upload_path'] = "D:/xampp/htdocs/FaceAlbum/static/pic/album/" . $username . "/" . $album_name;
         $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = 10*1024;
+        $config['max_size'] = 10 * 1024;
         $config['max_width'] = 1920;
         $config['max_height'] = 1080;
         $this->load->library('upload', $config);
@@ -63,31 +103,18 @@ class Moment extends CI_Controller
         redirect('moment/overview', 'auto');
     }
 
-    function search()
+    function share()
     {
-        if (!empty($this->session->userdata('username'))) {
-            $username = $this->session->userdata('username');
-            $userid = $this->Account_model->get_by_username($username)->userid;
-            $albums = $this->Album_model->get_albums($userid);
-            if (!empty($this->uri->segment(3))) {
-                $album_name = $this->uri->segment(3);
-                foreach ($albums as $row) {
-                    if ($row->name == $album_name) {
-                        $albumid = $row->albumid;
-                    }
-                }
-            } else {
-                $album_name = $albums[0]->name;
-                $albumid = $albums[0]->albumid;
-            }
-            $photos = $this->Album_model->get_photos($albumid);
-            $tags = $this->Album_model->get_tags($albumid);
-            $data = array("album_name" => $album_name, "albums" => $albums, "photos" => $photos,  "tags" => $tags);
-            $this->load->view('templates/header');
-            $this->load->view('moment/search', $data);
-            $this->load->view('templates/footer');
-        } else {
-            redirect('account/login', 'auto');
-        }
+        $newsid = $this->input->post('newsid');
+        $userid = $this->session->userdata('userid');
+        $this->Moment_model->share($newsid, $userid);
+        redirect('moment/overview', 'auto');
+    }
+
+    function star(){
+        $newsid = $this->input->post('newsid');
+        $data['result'] = $this->Moment_model->star($newsid);
+        $this->output->set_header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data);
     }
 }

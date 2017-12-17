@@ -25,28 +25,28 @@
                                 <div class="woocommerce-shipping-fields">
                                     <p class="form-row form-row-wide validate-required">
                                         <label for="username">Username<abbr title="required" class="required">*</abbr></label>
-                                        <input id="username" type="text" name="username"
-                                               placeholder="<?php echo $userMsg->username; ?>" value="" class="input-text">
+                                        <input id="username" type="text" name="username" disabled="disabled"
+                                               placeholder="" value="<?php echo $userMsg->username; ?>" class="input-text">
                                     </p>
                                     <p class="form-row form-row-wide validate-required">
                                         <label for="password">Password<abbr title="required" class="required">*</abbr></label>
                                         <input id="password" type="password" name="password"
-                                               placeholder="<?php echo $userMsg->password; ?>" value="" class="input-text">
+                                               placeholder="" value="" class="input-text">
                                     </p>
                                     <p class="form-row form-row-wide validate-required">
                                         <label for="email">Email<abbr title="required" class="required">*</abbr></label>
                                         <input id="email" type="text" name="email"
-                                               placeholder="<?php echo $userMsg->email; ?>" value="" class="input-text">
+                                               placeholder="" value="<?php echo $userMsg->email; ?>" class="input-text">
                                     </p>
                                     <p class="form-row form-row-wide">
                                         <label for="tel">Tel</label>
                                         <input id="tel" type="text" name="tel"
-                                               placeholder="<?php echo $userMsg->tel; ?>" value="" class="input-text">
+                                               placeholder="" value="<?php echo $userMsg->tel; ?>" class="input-text">
                                     </p>
                                     <p class="form-row form-row-wide">
                                         <label for="age">Age</label>
                                         <input id="age" type="text" name="age"
-                                               placeholder="<?php echo $userMsg->age; ?>" value="" class="input-text">
+                                               placeholder="" value="<?php echo $userMsg->age; ?>" class="input-text">
                                     </p>
                                     <p class="form-row form-row-wide validate-required">
                                         <label for="sex">Sex</label>
@@ -69,27 +69,16 @@
                             <div class="widget-top-sellers">
                                 <h3 class="mt-0 mb-30">Notifications</h3>
                                 <!-- item recent post-->
-                                <div class="item-top-sellers clearfix"><img src="static/pic/shop/70x60/1.jpg"
-                                                                            data-at2x="pic/shop/70x60/1@2x.jpg" alt>
-                                    <h3 class="title"><a href="single.html">Integer ante arcu serius</a></h3>
-                                    <div class="price">$40.<span class="mini-price">99</span> <span
-                                                class="old-price">$30.<span class="mini-price">99</span></span></div>
-                                </div>
-                                <!-- ! item recent post-->
-                                <!-- item recent post-->
-                                <div class="item-top-sellers clearfix"><img src="static/pic/shop/70x60/2.jpg"
-                                                                            data-at2x="pic/shop/70x60/2@2x.jpg" alt>
-                                    <h3 class="title"><a href="single.html">Aenean tellus metus</a></h3>
-                                    <div class="price">$15.<span class="mini-price">99</span></div>
-                                </div>
-                                <!-- ! item recent post-->
-                                <!-- item recent post-->
-                                <div class="item-top-sellers clearfix"><img src="static/pic/shop/70x60/3.jpg"
-                                                                            data-at2x="pic/shop/70x60/3@2x.jpg" alt>
-                                    <h3 class="title"><a href="single.html">Vestibulum ante ipsum</a><span
-                                                style="width:80%"></span></h3>
-                                    <div class="price">$20.<span class="mini-price">99</span></div>
-                                </div>
+                                <?php
+                                if (!empty($notifications)) {
+                                    foreach ($notifications as $row) {
+                                        echo "<div class=\"item-top-sellers clearfix\"><img src=\"static/pic/shop/70x60/1.jpg\" alt>";
+                                        echo "<h3 class=\"title\"><a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>$row->username</a></h3>";
+                                        echo "<div class=\"old-price\">recent news:<span class=\"price\">$row->news_num</span></div>";
+                                        echo "<div class=\"old-price\">recent photos:<span class=\"price\">$row->photo_num</span></div></div>";
+                                    }
+                                }
+                                ?>
                                 <!-- ! item recent post-->
                             </div>
                         </div>
@@ -121,8 +110,8 @@
                         <ul>
                             <?php
                             if (!empty($groups)) {
-                                while(list($key,$value)= each($groups)) {
-                                    echo "<li><a>".$key ."</a>[<span>" . $value ."</span>]</li>";
+                                foreach ($groups as $row) {
+                                    echo "<li><a>".$row->group ."</a>[<span>" . $row->num ."</span>]</li>";
                                 }
                             }
                             ?>
@@ -135,7 +124,7 @@
                             foreach ($friends as $row) {
                                 echo "<div class=\"item-top-sellers clearfix\" style=\"display: none\"><img src=\"static/pic/shop/70x60/1.jpg\" alt>";
                                 echo "<h3 class=\"title\">group: <span>" . $row->group . "</span><button style='margin-left: 10px'><i class=\"fa fa-pencil\"></i></button><button><i class=\"fa fa-remove\"></i></button></h3>";
-                                echo "<div class=\"price\">name: <a href=''>" . $row->username . "</a></div>";
+                                echo "<div class=\"price\">name: <a href='http://localhost/FaceAlbum/index.php/album/others_album/$row->username'>" . $row->username . "</a></div>";
                                 echo "</div>";
                             }
                         }

@@ -65,11 +65,9 @@ class Account extends CI_Controller
                 if (!file_exists($dir)) {
                     mkdir($dir);
                 }
-                $data ['userMsg'] = $this->Account_model->get_by_username($username);
-                $this->Account_model->login($this->_username);
-                $this->load->view('templates/header');
-                $this->load->view('account/settings', $data);
-                $this->load->view('templates/footer');
+                $user = $this->Account_model->get_by_username($username);
+                $this->Account_model->login($user->userid, $user->username);
+                redirect('account/settings', 'auto');
             } else {
                 $this->load->view('templates/header');
                 $this->load->view('account/register');
@@ -129,19 +127,21 @@ class Account extends CI_Controller
      */
     function login()
     {
+        $this->unverified_username = $this->input->post('username');
         // 设置错误定界符
         $this->form_validation->set_error_delimiters('<span class="error">', '</span>');
         if (empty($this->session->userdata('username'))) {
-            $this->_username = $this->input->post('username');
             if ($this->form_validation->run('login') == FALSE) {
                 $this->load->view('templates/header');
                 $this->load->view('account/login');
                 $this->load->view('templates/footer');
             } else {
                 // 注册session,设定登录状态
-                $this->Account_model->login($this->_username);
-                $row = $this->Account_model->get_by_username($this->_username);
+                $username = $this->input->post('username');
+                $row = $this->Account_model->get_by_username($username);
+                $userid = $row->userid;
                 $identity = $row->identity;
+                $this->Account_model->login($userid, $username);
                 if ($identity == "admin") {
                     redirect('admin/overview', 'auto');
                 } else {
@@ -149,8 +149,8 @@ class Account extends CI_Controller
                 }
             }
         } else {
-            $this->Account_model->login($this->session->userdata('username'));
             $row = $this->Account_model->get_by_username($this->session->userdata('username'));
+            $this->Account_model->login($row->userid, $row->username);
             $identity = $row->identity;
             if ($identity == "admin") {
                 redirect('admin/overview', 'auto');
@@ -185,7 +185,7 @@ class Account extends CI_Controller
      */
     function password_check($password)
     {
-        if ($this->Account_model->password_check($this->_username, $password)) {
+        if ($this->Account_model->password_check($this->unverified_username, $password)) {
             return TRUE;
         } else {
             $this->form_validation->set_message('password_check', '密码不正确');
@@ -217,14 +217,8 @@ class Account extends CI_Controller
         if ($this->form_validation->run('settings') == FALSE) {
             $data ['userMsg'] = $this->Account_model->get_by_username($username);
             $data ['friends'] = $this->Friend_model->get_friends($data ['userMsg']->userid);
-            $groups = array();
-            foreach ($data['friends'] as $row) {
-                $groups[$row->group] = 0;
-            }
-            foreach ($data['friends'] as $row) {
-                $groups[$row->group] += 1;
-            }
-            $data ['groups'] = $groups;
+            $data ['groups'] =  $this->Friend_model->get_groups($data ['userMsg']->userid);
+            $data ['notifications'] =  $this->Friend_model->get_friend_updates($data ['userMsg']->userid);
             $this->load->view('templates/header');
             $this->load->view('account/settings', $data);
             $this->load->view('templates/footer');
